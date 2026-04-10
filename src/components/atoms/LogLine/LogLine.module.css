@@ -1,6 +1,6 @@
 .line {
   display: block;
-  font-size: 10px;
+  font-size: 16px;
   line-height: 1.9;
   color: rgba(200, 214, 229, 0.45);
   font-family: var(--mono);

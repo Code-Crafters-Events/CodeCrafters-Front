@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../../atoms/Logo/Logo";
 import Spinner from "../../atoms/Spinner/Spinner";
 import CornerBrackets from "../../atoms/CornerBrackets/CornerBrackets";
@@ -10,12 +11,14 @@ import styles from "./LoadingScreen.module.css";
 
 const LOG_LINES = BOOT_STEPS.filter((s) => s.log !== null).map((s) => s.log);
 
-export default function LoadingScreen({ onEnter }) {
+export default function LoadingScreen() {
   const [stepIndex, setStepIndex] = useState(0);
   const [pct, setPct] = useState(0);
   const [label, setLabel] = useState(BOOT_STEPS[0].label);
   const [visibleLogs, setVisibleLogs] = useState(0);
   const [done, setDone] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (stepIndex >= BOOT_STEPS.length) return;
@@ -36,6 +39,10 @@ export default function LoadingScreen({ onEnter }) {
     return () => clearTimeout(timer);
   }, [stepIndex]);
 
+  const handleEnter = () => {
+    navigate("/home");
+  };
+
   return (
     <div className={styles.screen}>
       <div className={styles.scanlines} />
@@ -51,7 +58,7 @@ export default function LoadingScreen({ onEnter }) {
 
         <button
           className={`${styles.enterBtn} ${done ? styles.visible : ""}`}
-          onClick={onEnter}
+          onClick={handleEnter}
         >
           ENTRAR AL SISTEMA →
         </button>

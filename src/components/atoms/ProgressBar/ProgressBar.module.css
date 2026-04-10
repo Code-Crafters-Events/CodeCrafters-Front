@@ -1,5 +1,6 @@
 .track {
-  height: 2px;
+  height: 8px;
+  width: 200px;
   background: rgba(0, 245, 255, 0.1);
   overflow: hidden;
 }
@@ -7,7 +8,7 @@
 .fill {
   height: 100%;
   background: linear-gradient(90deg, var(--c), var(--c3));
-  transition: width 0.3s ease;
+  transition: width 0.25s ease;
 }
 
 .labels {
@@ -17,9 +18,32 @@
 }
 
 .label {
-  font-size: 9px;
-  color: rgba(0, 245, 255, 0.3);
+  font-size: 10px;
+  color: var(--c);
   letter-spacing: 2px;
   font-family: var(--mono);
   text-transform: uppercase;
+}
+
+.container {
+  width: 100%;
+}
+
+.barBg {
+  height: 2px;
+  background: rgba(0, 245, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.pctText {
+  font-size: 9px;
+  color: rgba(0, 245, 255, 0.3);
+  letter-spacing: 2px;
 }

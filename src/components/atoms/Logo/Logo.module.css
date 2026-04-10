@@ -5,7 +5,7 @@
 
 .main {
   font-family: var(--orb);
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 900;
   letter-spacing: 6px;
   color: var(--c);
@@ -17,8 +17,8 @@
 }
 
 .sub {
-  font-size: 9px;
-  color: rgba(0, 245, 255, 0.35);
+  font-size: 18px;
+  color: var(--c);
   letter-spacing: 6px;
   margin-top: 4px;
   font-family: var(--mono);

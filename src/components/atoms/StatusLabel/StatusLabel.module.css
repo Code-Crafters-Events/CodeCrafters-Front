@@ -1,9 +1,12 @@
 .label {
+  .label {
+  font-family: var(--orb);
   font-size: 9px;
   letter-spacing: 5px;
   color: rgba(0, 245, 255, 0.5);
   text-transform: uppercase;
-  font-family: var(--mono);
   margin-bottom: 20px;
   min-height: 14px;
+  text-align: center;
+}
 }
