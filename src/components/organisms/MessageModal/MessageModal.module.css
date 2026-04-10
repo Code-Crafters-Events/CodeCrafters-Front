@@ -1,0 +1,102 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.modalContainer {
+  width: 383px;
+  max-width: 100%;
+  height: 299px;
+  background-color: var(--background-modal);
+  border-radius: 20px;
+  box-shadow: var(--text-shadow); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.icon {
+  width: 75px; 
+  height: 75px;
+  object-fit: contain;
+}
+
+.message {
+  font-weight: 400;
+  font-size: 26px;
+  color: #000000;
+  margin: 0;
+  text-align: center;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+@media (min-width: 768px) {
+  .modalContainer {
+    width: 600px;
+    height: 350px;
+    gap: 30px;
+  }
+  
+  .icon {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .message {
+    font-size: 28px;
+  }
+}
+
+
+@media (min-width: 1000px) {
+  .modalContainer {
+    width: 944px;
+    height: 425px;
+    gap: 40px;
+    padding: 0; 
+  }
+
+  .content {
+    gap: 30px;
+  }
+
+  .icon {
+    width: 127px; 
+    height: 127px;
+  }
+
+  .message {
+    font-size: 32px;
+    width: 425px;
+    height: 38px;
+    line-height: 38px;
+    text-align: left;
+  }
+}

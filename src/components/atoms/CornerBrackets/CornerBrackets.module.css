@@ -1,0 +1,33 @@
+.corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+}
+
+.topLeft {
+  top: 16px;
+  left: 16px;
+  border-top: 1px solid var(--c);
+  border-left: 1px solid var(--c);
+}
+
+.topRight {
+  top: 16px;
+  right: 16px;
+  border-top: 1px solid var(--c);
+  border-right: 1px solid var(--c);
+}
+
+.bottomLeft {
+  bottom: 16px;
+  left: 16px;
+  border-bottom: 1px solid var(--c);
+  border-left: 1px solid var(--c);
+}
+
+.bottomRight {
+  bottom: 16px;
+  right: 16px;
+  border-bottom: 1px solid var(--c);
+  border-right: 1px solid var(--c);
+}

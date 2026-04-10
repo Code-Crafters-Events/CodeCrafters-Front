@@ -1,0 +1,26 @@
+.wrapper {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.main {
+  font-family: var(--orb);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: var(--c);
+}
+
+.accent {
+  color: var(--c2);
+  font-style: normal;
+}
+
+.sub {
+  font-size: 9px;
+  color: rgba(0, 245, 255, 0.35);
+  letter-spacing: 6px;
+  margin-top: 4px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+}
