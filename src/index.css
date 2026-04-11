@@ -27,3 +27,9 @@ html {
   height: 100%;
   overflow-x: hidden;
 }
+
+main {
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
+}

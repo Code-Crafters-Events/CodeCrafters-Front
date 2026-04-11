@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/organisms/Header/Header";
 import { AuthProvider } from "../context/auth/AuthProvider";
 import Footer from "../components/organisms/Footer/Footer";
+import "./Layout.module.css";
 
 const Layout = () => {
   return (
