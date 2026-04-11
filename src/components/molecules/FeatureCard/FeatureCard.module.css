@@ -1,0 +1,21 @@
+.card {
+  background: var(--c9);
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--c8);
+}
+
+.title {
+  font-size: 24px;
+  color: #e8f0f8;
+  margin-bottom: 6px;
+  font-family: var(--orb);
+  font-weight: bold;
+}
+
+.description {
+  font-size: 24px;
+  color: var(--c7);
+  font-family: var(--mono);
+}

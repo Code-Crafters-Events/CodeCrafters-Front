@@ -1,0 +1,47 @@
+.stat {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .stat {
+    padding: 22px 12px;
+    text-align: center;
+    border: 1px solid var(--c8);
+    display: block;
+    background-color: var(--c9);
+  }
+
+  .number {
+    font-family: var(--orb);
+    font-size: 36px;
+    font-weight: bold;
+  }
+
+  .label {
+    font-size: 18px;
+    color: white;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .barTrack {
+    height: 2px;
+    margin: 8px 12px 0;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .barFill {
+    height: 2px;
+    animation: barfill 2s ease-out forwards;
+  }
+
+  @keyframes barfill {
+    from {
+      width: 0;
+    }
+    to {
+      width: var(--w);
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.item {
+  font-size: 18px;
+  color: var(--c);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.separator {
+  color: var(--c2);
+  font-weight: normal;
+  margin-right: 6px;
+}

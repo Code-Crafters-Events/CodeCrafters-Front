@@ -1,0 +1,20 @@
+.ticker {
+  margin-top: 50px;  
+  padding: 10px 0;
+  background: rgba(0, 245, 255, 0.04);
+  border-top: 1px solid var(--c8);
+  border-bottom: 1px solid var(--c8);
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  gap: 56px;
+  white-space: nowrap;
+  animation: tick 22s linear infinite;
+}
+
+@keyframes tick {
+  from { transform: translateX(0);    }
+  to   { transform: translateX(-50%); }
+}

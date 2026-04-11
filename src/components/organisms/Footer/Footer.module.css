@@ -20,7 +20,7 @@ footer{
 .titleApp{
     font-family: var(--orb);
     font-weight: bold;
-    color: var(--c);
+    color: var(--c)!important;
     font-size: 32px;
     padding-top: 50px;
     padding-bottom: 30px;

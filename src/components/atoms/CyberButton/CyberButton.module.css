@@ -1,0 +1,35 @@
+.btn {
+  font-family: var(--mono);
+  width: 180px;
+  font-size: 18px;
+  padding: 14px 32px;
+  cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.primary {
+  background: var(--c);
+  color: #000;
+  font-weight: bold;
+}
+
+.secondary {
+  font-family: var(--orb);
+  font-size: 20px;
+  font-weight: bold;
+  background: transparent;
+  color: white;
+  border: 1px solid var(--c4);
+}
+
+@media (min-width: 1024px) {
+  .btn {
+    width: 240px;
+  }
+}

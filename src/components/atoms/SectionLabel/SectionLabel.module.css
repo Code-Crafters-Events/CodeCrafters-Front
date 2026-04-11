@@ -1,0 +1,12 @@
+.wrapperSection {
+  padding: 24px 28px 12px;
+  margin-top: 20px;
+}
+
+.title {
+  font-family: var(--orb);
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+}
