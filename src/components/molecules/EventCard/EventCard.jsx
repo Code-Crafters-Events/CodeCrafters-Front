@@ -1,5 +1,5 @@
-import EventTag from '../../atoms/EventTag/EventTag';
-import styles from './EventCard.module.css';
+import EventTag from "../../atoms/EventTag/EventTag";
+import styles from "./EventCard.module.css";
 
 export default function EventCard({
   type,
@@ -24,7 +24,10 @@ export default function EventCard({
       <h3 className={styles.name}>{name}</h3>
 
       <p className={styles.info}>{date}</p>
-      <p className={styles.info}> {author} · Máx {capacity} plazas</p>
+      <p className={styles.info}>
+        {" "}
+        {author} · Máx {capacity} plazas
+      </p>
       <p className={styles.info}>{place}</p>
 
       <div className={styles.footer}>

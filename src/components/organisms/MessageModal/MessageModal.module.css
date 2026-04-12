@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); 
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +19,7 @@
   height: 299px;
   background-color: var(--background-modal);
   border-radius: 20px;
-  box-shadow: var(--text-shadow); 
+  box-shadow: var(--text-shadow);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,7 +37,7 @@
 }
 
 .icon {
-  width: 75px; 
+  width: 75px;
   height: 75px;
   object-fit: contain;
 }
@@ -56,31 +56,29 @@
   justify-content: center;
 }
 
-
 @media (min-width: 768px) {
   .modalContainer {
     width: 600px;
     height: 350px;
     gap: 30px;
   }
-  
+
   .icon {
     width: 100px;
     height: 100px;
   }
-  
+
   .message {
     font-size: 28px;
   }
 }
-
 
 @media (min-width: 1000px) {
   .modalContainer {
     width: 944px;
     height: 425px;
     gap: 40px;
-    padding: 0; 
+    padding: 0;
   }
 
   .content {
@@ -88,7 +86,7 @@
   }
 
   .icon {
-    width: 127px; 
+    width: 127px;
     height: 127px;
   }
 

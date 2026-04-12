@@ -1,4 +1,4 @@
-import styles from './TickerItem.module.css';
+import styles from "./TickerItem.module.css";
 
 export default function TickerItem({ separator, text }) {
   return (

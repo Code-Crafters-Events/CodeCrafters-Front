@@ -1,0 +1,21 @@
+.input {
+  width: 90%;
+  height: 50px;
+  padding: 12px 20px;
+  border: 1px solid var(--c8);
+  background-color: black;
+  color: white;
+  font-family: var(--mono);
+  transition: box-shadow 0.3s ease;
+  font-size: 18px;
+}
+
+.input:focus {
+  box-shadow: var(--c8);
+}
+
+@media (min-width: 1024px) {
+  .input {
+    font-size: 20px;
+  }
+}

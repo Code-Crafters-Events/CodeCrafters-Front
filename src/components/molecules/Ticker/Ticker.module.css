@@ -1,5 +1,5 @@
 .ticker {
-  margin-top: 50px;  
+  margin-top: 50px;
   padding: 10px 0;
   background: rgba(0, 245, 255, 0.04);
   border-top: 1px solid var(--c8);
@@ -15,6 +15,10 @@
 }
 
 @keyframes tick {
-  from { transform: translateX(0);    }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }

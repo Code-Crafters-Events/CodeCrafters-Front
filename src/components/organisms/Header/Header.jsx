@@ -74,7 +74,6 @@ function Header() {
                 src={user.avatarUrl || DefaultAvatar}
                 alt="avatar"
                 className={styles.avatar}
-                onClick={() => navigate("/home/panel")}
               />
             </div>
             <div className={styles.fieldLogout}>

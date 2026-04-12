@@ -1,3 +1,5 @@
+import "../Community/Community.module.css";
+
 function RegEvent(){
     return(
         <main>

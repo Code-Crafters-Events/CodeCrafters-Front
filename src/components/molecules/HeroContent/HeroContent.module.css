@@ -19,22 +19,28 @@
   margin-bottom: 6px;
 }
 
-.subtitle{
+.subtitle {
   font-family: var(--orb);
   font-weight: bold;
   font-size: 20px;
   color: white;
 }
 
-.subh3{
+.subh3 {
   font-family: var(--mono);
   font-size: 16px;
-  color:var(--c7);
+  color: var(--c7);
 }
 
-.cx { color: var(--c);  }
-.cg { color: var(--c2); }
-.cv { color: var(--c3); }
+.cx {
+  color: var(--c);
+}
+.cg {
+  color: var(--c2);
+}
+.cv {
+  color: var(--c3);
+}
 
 .tagline {
   font-size: 20px;
@@ -53,17 +59,16 @@
   margin-top: 30px;
 }
 
-
-@media (min-width:1024px){
-  .subtitle{
+@media (min-width: 1024px) {
+  .subtitle {
     font-size: 40px;
   }
 
-  .subh3{
+  .subh3 {
     font-size: 32px;
   }
 
-  .tagline{
+  .tagline {
     display: block;
   }
 }

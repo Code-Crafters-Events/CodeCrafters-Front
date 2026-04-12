@@ -10,8 +10,8 @@
   --c5: #ffb800;
   --c6: #ff0004;
   --c7: #8fa4b6;
-  --c8: #4B9B9D;
-  --c9: #0D1E23;
+  --c8: #4b9b9d;
+  --c9: #0d1e23;
 
   --mono: "Share Tech Mono", monospace;
   --orb: "Orbitron", sans-serif;
@@ -28,6 +28,7 @@ html {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  background-color: black;
 }
 
 main {

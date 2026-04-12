@@ -1,4 +1,4 @@
-import styles from './CornerBrackets.module.css';
+import styles from "./CornerBrackets.module.css";
 
 export default function CornerBrackets() {
   return (

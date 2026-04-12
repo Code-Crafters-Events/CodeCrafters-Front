@@ -82,6 +82,23 @@ h2 {
 .navLink:hover {
   color: var(--c);
 }
+
+.field_logged {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.logout_icon {
+  width: 30px;
+  height: 30px;
+}
 @media (min-width: 1024px) {
   header {
     flex-wrap: nowrap;
@@ -121,5 +138,15 @@ h2 {
 
   .navLink {
     font-size: 20px;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .logout_icon {
+    width: 77px;
+    height: 77px;
   }
 }

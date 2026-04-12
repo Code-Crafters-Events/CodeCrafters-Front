@@ -48,5 +48,13 @@
   letter-spacing: 1px;
 }
 
-@keyframes spinCw  { to { transform: rotate(360deg);  } }
-@keyframes spinCcw { to { transform: rotate(-360deg); } }
+@keyframes spinCw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinCcw {
+  to {
+    transform: rotate(-360deg);
+  }
+}

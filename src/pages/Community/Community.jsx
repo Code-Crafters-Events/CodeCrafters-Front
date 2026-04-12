@@ -1,3 +1,5 @@
+import "./Community.module.css";
+
 function Community (){
     return(
         <main>

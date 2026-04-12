@@ -1,7 +1,9 @@
-function Register(){
+import RegisterForm from "../../components/organisms/RegisterForm/RegisterForm";
+
+const Register=()=>{
     return(
-        <main>
-            <p>Formulario de registro</p>
+        <main role="main">
+            <RegisterForm/>
         </main>
     )
 }

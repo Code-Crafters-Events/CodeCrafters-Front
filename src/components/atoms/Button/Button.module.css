@@ -1,0 +1,56 @@
+.neon {
+  background: var(--c);
+  padding: 14px 32px;
+  color: #000;
+  font-weight: bold;
+  text-transform: lowercase;
+  transition:
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  font-size: 18px;
+}
+
+.neon:hover {
+  box-shadow:
+    0 0 14px var(--c3),
+    0 0 4px var(--c3);
+  opacity: 0.9;
+}
+
+.neon:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cancel {
+  font-family: var(--orb);
+  padding: 14px 32px;
+  font-size: 20px;
+  font-weight: bold;
+  background: black;
+  color: white;
+  border: 1px solid var(--c4);
+  text-transform: lowercase;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  font-size: 18px;
+}
+
+.cancel:hover {
+  border-color: #6a3aaa;
+  color: #fff;
+}
+
+@media (min-width: 1024px) {
+  .neon {
+    width: 240px;
+  }
+
+  .cancel {
+    width: 240px;
+  }
+}

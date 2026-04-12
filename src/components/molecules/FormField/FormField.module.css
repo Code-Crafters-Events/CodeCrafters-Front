@@ -1,0 +1,36 @@
+.fieldContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.label {
+  font-family: var(--mono);
+  color: var(--c8);
+  font-size: 18px;
+}
+
+.mainInput {
+  padding: 12px 15px;
+  background-color: white;
+  font-family: var(--mono);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.mainInput::placeholder {
+  color: var(--c7);
+  font-size: 0.9rem;
+}
+
+.error {
+  color: red;
+  margin-left: 10px;
+}
+
+@media (min-width: 1024px) {
+  .label {
+    font-size: 32px;
+  }
+}
