@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  width: 100%;
+  height: fit-content;
+}
+
+.form {
+  background-color: var(--c9);
+  border: 1px solid var(--c8);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.title {
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--c);
+  margin: 0 0 0.5rem;
+}
+
+.globalError {
+  color: red;
+  font-family: var(--mono);
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid red;
+  width: 100%;
+  max-width: 420px;
+}
+
+.registerLink {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--c7);
+  text-align: center;
+  margin: 0;
+}
+
+.link {
+  color: var(--c3);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 6px var(--c3);
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .form {
+    max-width: 50%;
+    padding: 2.5rem 3rem;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .actions {
+    justify-content: center;
+    gap: 100px;
+  }
+
+  .registerLink {
+    font-size: 18px;
+  }
+}

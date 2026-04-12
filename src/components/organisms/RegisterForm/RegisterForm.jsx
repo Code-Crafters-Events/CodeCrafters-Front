@@ -8,6 +8,7 @@ import { imagesApi } from "../../../services/imagesApi";
 import { AuthContext } from "../../../context/auth/AuthContext";
 import Toast from "../../atoms/Toast/Toast";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const validate = (fields) => {
   const errors = {};
@@ -265,14 +266,9 @@ const RegisterForm = () => {
                 aria-required="true"
               />
               Acepto las
-              <a
-                href="/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.privacyLink}
-              >
+              <Link to="/privacy" className={styles.privacyLink}>
                 políticas de privacidad
-              </a>
+              </Link>
             </label>
 
             {serverErrors._terms && (
@@ -296,7 +292,7 @@ const RegisterForm = () => {
       </form>
       {showToast && (
         <Toast
-          message="¡Cuenta creada correctamente! Bienvenida."
+          message="¡Cuenta creada correctamente! Bienvenid@."
           type="success"
           duration={3000}
           onClose={() => {

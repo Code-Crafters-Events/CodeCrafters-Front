@@ -1,15 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/organisms/Header/Header";
 import Footer from "../components/organisms/Footer/Footer";
+import styles from "./Layout.module.css";
 
 const Layout = () => {
   return (
     <>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
+      <div className={styles.wrapper}>
+        <Header />
+        <main className={styles.main}>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 };
