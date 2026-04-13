@@ -1,0 +1,45 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--c9);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.title {
+  font-family: var(--mono);
+  font-size: 20px;
+  color: white;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .info {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}

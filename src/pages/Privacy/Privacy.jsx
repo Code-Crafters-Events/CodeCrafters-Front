@@ -1,11 +1,12 @@
 import "../Community/Community.module.css";
 
-function UserPanel(){
+
+function Privacy(){
     return(
         <main>
-            <p>Panel de usuario</p>
+            <p>Aqui va la privacidad</p>
         </main>
     )
 }
 
-export default UserPanel;
+export default Privacy;

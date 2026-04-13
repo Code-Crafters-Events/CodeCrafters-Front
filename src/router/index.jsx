@@ -6,12 +6,13 @@ import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import Event from "../pages/Event/Event";
 import RegEvent from "../pages/RegEvent/RegEvent";
-import Panel from "../pages/Panel/UserPanel";
+import Panel from "../pages/Panel/Panel";
 import Loading from "../components/organisms/LoadingScreen/LoadingScreen";
 import Tickets from "../pages/PanelTickets/PanelTickets";
 import Qr from "../pages/Qr/Qr";
 import Profile from "../pages/Profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
+import Privacy from "../pages/Privacy/Privacy";
 import Prueba from "../pages/muestra";
 import { Component } from "react";
 
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
       { path: "register", Component: Register },
       { path: "community", Component: Community },
       { path: "info/:id", Component: Event },
+      { path: 'privacy', Component: Privacy },
     ],
   },
   {

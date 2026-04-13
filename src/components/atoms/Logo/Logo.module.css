@@ -5,7 +5,7 @@
 
 .main {
   font-family: var(--orb);
-  font-size: 36px;
+  font-size: 25px;
   font-weight: 900;
   letter-spacing: 6px;
   color: var(--c);
@@ -19,8 +19,14 @@
 .sub {
   font-size: 18px;
   color: var(--c);
-  letter-spacing: 6px;
   margin-top: 4px;
   font-family: var(--mono);
   text-transform: uppercase;
+}
+
+
+@media (min-width:1024px){
+ .main{
+  font-size: 36px;
+ }
 }

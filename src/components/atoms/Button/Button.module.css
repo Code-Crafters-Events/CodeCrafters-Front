@@ -43,6 +43,41 @@
   color: #fff;
 }
 
+
+.edit {
+  font-family: var(--mono);
+  font-size: 20px;
+  padding: 6px 16px;
+  background-color: var(--c5);
+  color: #0a0a0a;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transition: opacity 0.2s ease;
+}
+
+.edit:hover {
+  opacity: 0.85;
+}
+
+.danger {
+  font-family: var(--mono);
+  font-size: 20px;
+  padding: 6px 16px;
+  background-color: var(--c6);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transition: opacity 0.2s ease;
+}
+
+.danger:hover {
+  opacity: 0.85;
+}
+
 @media (min-width: 1024px) {
   .neon {
     width: 240px;

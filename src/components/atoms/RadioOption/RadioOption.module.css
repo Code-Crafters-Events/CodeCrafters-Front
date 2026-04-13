@@ -1,0 +1,49 @@
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: white;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+
+.input {
+  display: none;
+}
+
+.custom {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--c7);
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.input:checked + .custom {
+  border-color: var(--c);
+}
+
+.input:checked + .custom::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background-color: var(--c);
+}
+
+.label:has(.input:checked) {
+  color: var(--c);
+}
+
+
+@media (min-width:1024px){
+  .label{
+    font-size: 18px;
+  }
+}
