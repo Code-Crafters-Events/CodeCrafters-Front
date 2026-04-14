@@ -1,0 +1,35 @@
+.button {
+  position: fixed !important;
+  bottom: 25px !important;
+  right: 20px !important;
+  width: 50px;
+  height: 50px;
+  background-color: #00ff9d;
+  z-index: 999999 !important;
+  display: flex !important;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  stroke: #000000;
+}
+
+.button:active {
+  transform: scale(0.9);
+  background-color: #00e58c;
+}
+
+@media (min-width: 1024px) {
+  .button {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .button {
+    display: flex;
+    bottom: 25px;
+    right: 20px;
+  }
+}

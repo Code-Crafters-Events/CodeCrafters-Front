@@ -1,0 +1,188 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 400;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100dvh;
+  background-color: var(--c4);
+  border-left: 1px solid var(--c);
+  z-index: 401;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem 1.25rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: slideIn 0.22s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.groupLabel {
+  font-family: var(--mono);
+  font-size: 26px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c);
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.25rem;
+}
+
+.input {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  width: 100%;
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.input:focus {
+  border-color: var(--c);
+}
+
+.priceRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.priceField,
+.dateField {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.priceField .input,
+.dateField .input {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.priceLabel {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: white;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid white;
+  background-color: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.checkbox:checked {
+  background-color: var(--c);
+  border-color: var(--c);
+}
+
+.checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #0a0a0a;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.clearBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  align-self: flex-start;
+}
+
+.clearBtn:hover {
+  color: white;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+@media (max-width: 599px) {
+  .panel {
+    top: 0;
+    bottom: auto;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    max-height: 90dvh;
+    border-left: none;
+    border-bottom: 1px solid var(--c);
+    animation: slideDown 0.25s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .actions {
+    margin-top: 1.5rem;
+    padding-bottom: 1rem;
+  }
+}

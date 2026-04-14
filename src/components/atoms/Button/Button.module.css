@@ -43,7 +43,6 @@
   color: #fff;
 }
 
-
 .edit {
   font-family: var(--mono);
   font-size: 20px;
@@ -78,6 +77,25 @@
   opacity: 0.85;
 }
 
+.filter {
+  font-family: var(--mono);
+  font-size: 18px;
+  padding: 6px 16px;
+  background-color: var(--c);
+  color: #0a0a0a;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  width: 125px;
+  height: 45px;
+}
+
+.filter:hover {
+  opacity: 0.85;
+}
+
 @media (min-width: 1024px) {
   .neon {
     width: 240px;
@@ -85,5 +103,10 @@
 
   .cancel {
     width: 240px;
+  }
+
+  .filter {
+    width: 240px;
+    height: 53px;
   }
 }

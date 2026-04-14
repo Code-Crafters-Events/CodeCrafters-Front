@@ -266,7 +266,7 @@ const RegisterForm = () => {
                 aria-required="true"
               />
               Acepto las
-              <Link to="/privacy" className={styles.privacyLink}>
+              <Link to="/home/privacy" className={styles.privacyLink}>
                 políticas de privacidad
               </Link>
             </label>

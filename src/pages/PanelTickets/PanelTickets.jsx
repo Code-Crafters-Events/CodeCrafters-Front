@@ -1,4 +1,3 @@
-import "../Community/Community.module.css";
 
 function PanelTickets(){
     return(

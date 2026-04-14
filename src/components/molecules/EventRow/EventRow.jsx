@@ -6,7 +6,7 @@ const EventRow = ({ event, onEdit, onDelete }) => {
   return (
     <div className={styles.row}>
       <div className={styles.info}>
-        <CategoryTag category={event.category} />
+        <CategoryTag category={event.type} />
         <p className={styles.title}>{event.title}</p>
       </div>
       <div className={styles.actions}>

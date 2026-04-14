@@ -1,12 +1,6 @@
-import "../Community/Community.module.css";
-
+import PrivacyPolicy from "../../components/organisms/PrivacyPolicy/PrivacyPolicy";
 
 function Privacy(){
-    return(
-        <main>
-            <p>Aqui va la privacidad</p>
-        </main>
-    )
+    return <PrivacyPolicy />;
 }
-
 export default Privacy;

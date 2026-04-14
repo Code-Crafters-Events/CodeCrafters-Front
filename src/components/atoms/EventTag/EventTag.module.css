@@ -1,7 +1,16 @@
 .tag {
-  font-size: 24px;
-  padding: 3px 10px;
+  font-size: 16px;
+  padding: 4px 12px;
   text-transform: uppercase;
   border: 1px solid;
   font-family: var(--mono);
+  border-radius: 4px;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 1024px) {
+  .tag {
+    font-size: 24px;
+  }
 }

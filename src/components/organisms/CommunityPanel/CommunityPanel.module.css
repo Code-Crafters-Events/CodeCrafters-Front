@@ -1,0 +1,107 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  gap: 1rem;
+  position: relative;
+}
+
+.title {
+  font-family: var(--orb);
+  font-size: 20px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  flex: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.message {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--c7);
+  text-align: center;
+}
+
+.error {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: #ff4d4d;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--c7);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease;
+}
+
+.dotActive {
+  background-color: var(--c);
+}
+
+.clearFilters {
+  background: transparent;
+  border: none;
+  color: var(--c7);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.clearFilters:hover {
+  color: white;
+}
+
+@media (min-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    justify-content:flex-start;
+  }
+  .title {
+    font-size: 32px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

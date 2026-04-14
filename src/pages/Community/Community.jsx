@@ -1,11 +1,6 @@
-import "./Community.module.css";
+import CommunityPanel from "../../components/organisms/CommunityPanel/CommunityPanel";
 
-function Community (){
-    return(
-        <main>
-            <p>Panel de comunidad</p>
-        </main>
-    )
+function Community() {
+  return <CommunityPanel />;
 }
-
 export default Community;

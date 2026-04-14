@@ -1,0 +1,128 @@
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  background-color: var(--s2);
+  border: 1px solid var(--c8);
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  border-bottom: 2px solid var(--c);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: var(--orb);
+  color: var(--c);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.update {
+  font-family: var(--mono);
+  color: var(--c7);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-top: 2.5rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.subtitle {
+  font-family: var(--orb);
+  color: var(--c3);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+
+.text {
+  font-family: var(--mono);
+  color: white;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.list {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+  list-style: none;
+}
+
+.list li {
+  font-family: var(--mono);
+  color: var(--c7);
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.list li::before {
+  content: ">";
+  color: var(--c);
+  position: absolute;
+  left: -1.2rem;
+}
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--c9);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contactText {
+  font-family: var(--mono);
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.contactBtn {
+  display: inline-block;
+  font-family: var(--orb);
+  color: black;
+  background-color: var(--c);
+  padding: 0.8rem 1.5rem;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px var(--c8);
+}
+
+.contactBtn:hover {
+  background-color: var(--c3);
+  box-shadow: 0 0 20px var(--c8);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 2.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}

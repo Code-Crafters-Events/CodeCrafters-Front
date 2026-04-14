@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import TickerItem from "../../atoms/TickerItem/TickerItem";
 import styles from "./Ticker.module.css";
+import { eventsApi } from "../../../services/eventsApi";
 
-const ITEMS = [
+const FALLBACK = [
   { separator: "►", text: "eventos tech en vivo" },
   { separator: "►", text: "masterclasses exclusivas" },
   { separator: "►", text: "hackathons presenciales" },
@@ -11,7 +13,21 @@ const ITEMS = [
 ];
 
 export default function Ticker() {
-  const doubled = [...ITEMS, ...ITEMS];
+  const [items, setItems] = useState(FALLBACK);
+
+  useEffect(() => {
+    eventsApi
+      .getAll(0, 10)
+      .then((res) => {
+        const events = res.data.content ?? res.data;
+        if (events.length > 0) {
+          setItems(events.map((e) => ({ separator: "►", text: e.title })));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const doubled = [...items, ...items];
 
   return (
     <section aria-label="Novedades" className={styles.ticker}>
