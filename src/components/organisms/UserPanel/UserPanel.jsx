@@ -4,19 +4,30 @@ import EventRow from "../../molecules/EventRow/EventRow";
 import Button from "../../atoms/Button/Button";
 import Toast from "../../atoms/Toast/Toast";
 import EventFormModal from "../../molecules/EventFormModal/EventFormModal";
+import MessageModal from "../../organisms/MessageModal/MessageModal";
 import { eventsApi } from "../../../services/eventsApi";
 import { AuthContext } from "../../../context/auth/AuthContext";
+
+import WarningIcon from "../../../assets/warning.png";
 
 const UserPanel = () => {
   const { user } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState(null);
+
   const [modalEvent, setModalEvent] = useState(undefined);
-  const isModalOpen = modalEvent !== undefined;
+  const isFormModalOpen = modalEvent !== undefined;
+
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     if (!user?.id) return;
+    loadEvents();
+  }, [user]);
+
+  const loadEvents = () => {
+    setIsLoading(true);
     eventsApi
       .getByUser(user.id)
       .then((res) => setEvents(res.data.content ?? res.data))
@@ -27,7 +38,7 @@ const UserPanel = () => {
         }),
       )
       .finally(() => setIsLoading(false));
-  }, [user]);
+  };
 
   const handleSaved = (savedEvent, wasEditing) => {
     if (wasEditing) {
@@ -42,16 +53,20 @@ const UserPanel = () => {
       setEvents((prev) => [...prev, savedEvent]);
       setToast({ message: "Evento creado correctamente.", type: "success" });
     }
+    setModalEvent(undefined);
   };
 
-  const handleDelete = async (eventId) => {
-    if (!window.confirm("¿Segura que quieres borrar este evento?")) return;
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+
     try {
-      await eventsApi.delete(eventId, user.id);
-      setEvents((prev) => prev.filter((e) => e.id !== eventId));
-      setToast({ message: "Evento eliminado.", type: "success" });
-    } catch {
-      setToast({ message: "No se pudo eliminar el evento.", type: "error" });
+      await eventsApi.delete(deleteId, user.id);
+      setEvents((prev) => prev.filter((e) => e.id !== deleteId));
+      setToast({ message: "Evento eliminado con éxito.", type: "success" });
+    } catch (error) {
+      setToast({ message: "Error al eliminar el evento.", type: "error" });
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -73,7 +88,7 @@ const UserPanel = () => {
                 key={event.id}
                 event={event}
                 onEdit={(e) => setModalEvent(e)}
-                onDelete={handleDelete}
+                onDelete={(id) => setDeleteId(id)}
               />
             ))}
           </div>
@@ -90,11 +105,22 @@ const UserPanel = () => {
       </div>
 
       <EventFormModal
-        isOpen={isModalOpen}
+        isOpen={isFormModalOpen}
         event={modalEvent}
         onClose={() => setModalEvent(undefined)}
         onSaved={handleSaved}
       />
+
+      {deleteId && (
+        <MessageModal
+          image={WarningIcon}
+          message="¿Estás seguro de que quieres eliminar este evento? Esta acción no se puede deshacer."
+          btnText="Eliminar"
+          btnClass="liquid"
+          onConfirm={confirmDelete}
+          onClose={() => setDeleteId(null)}
+        />
+      )}
 
       {toast && (
         <Toast

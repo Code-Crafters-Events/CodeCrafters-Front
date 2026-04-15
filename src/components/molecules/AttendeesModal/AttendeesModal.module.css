@@ -1,0 +1,69 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 600;
+  padding: 1rem;
+}
+
+.modal {
+  background-color: var(--s1);
+  border: 1px solid var(--c8);
+  width: 100%;
+  max-width: 360px;
+  max-height: 70dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--c8);
+}
+
+.title {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--c);
+  margin: 0;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: var(--c7);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.closeBtn:hover {
+  color: white;
+}
+
+.list {
+  list-style: none;
+  overflow-y: auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.name {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: white;
+}

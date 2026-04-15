@@ -17,8 +17,7 @@
   width: 383px;
   max-width: 100%;
   height: 299px;
-  background-color: var(--background-modal);
-  border-radius: 20px;
+  background-color: var(--c4);
   box-shadow: var(--text-shadow);
   display: flex;
   flex-direction: column;
@@ -45,35 +44,19 @@
 .message {
   font-weight: 400;
   font-size: 26px;
-  color: #000000;
+  color: white;
   margin: 0;
   text-align: center;
+  font-size: var(--mono);
 }
 
 .actions {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
-@media (min-width: 768px) {
-  .modalContainer {
-    width: 600px;
-    height: 350px;
-    gap: 30px;
-  }
-
-  .icon {
-    width: 100px;
-    height: 100px;
-  }
-
-  .message {
-    font-size: 28px;
-  }
-}
-
-@media (min-width: 1000px) {
+@media (min-width: 1024px) {
   .modalContainer {
     width: 944px;
     height: 425px;
@@ -91,10 +74,10 @@
   }
 
   .message {
-    font-size: 32px;
+    font-size: 25px !important;
     width: 425px;
     height: 38px;
-    line-height: 38px;
     text-align: left;
+    font-size: var(--mono);
   }
 }

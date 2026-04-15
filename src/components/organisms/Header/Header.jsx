@@ -8,6 +8,10 @@ import DefaultAvatar from "../../../assets/avatar.jpg";
 function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const getAvatarUrl = () => {
+    if (!user || !user.profileImage) return DefaultAvatar;
+    return user.profileImage.replace("localhost:5173", "localhost:8080");
+  };
 
   const handleLogout = () => {
     logout();
@@ -71,9 +75,14 @@ function Header() {
           <div className={styles.field_logged}>
             <div className={styles.fieldAvatar}>
               <img
-                src={user.avatarUrl || DefaultAvatar}
+                src={getAvatarUrl()}
                 alt="avatar"
                 className={styles.avatar}
+                onError={(e) => {
+                  if (e.target.src !== DefaultAvatar) {
+                    e.target.src = DefaultAvatar;
+                  }
+                }}
               />
             </div>
             <div className={styles.fieldLogout}>

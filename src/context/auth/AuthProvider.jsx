@@ -4,13 +4,28 @@ import { AuthContext } from "./AuthContext";
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("user");
-    return stored ? JSON.parse(stored) : null;
+    try {
+      return stored ? JSON.parse(stored) : null;
+    } catch (error) {
+      console.error("Error al parsear el usuario del localStorage", error);
+      return null;
+    }
   });
 
   const login = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    //localStorage.setItem("token", userData.token);
-    setUser(userData);
+    const userId = userData.id || userData.userId || userData.user?.id;
+
+    const normalizedUser = {
+      ...userData,
+      id: userId,
+    };
+
+    localStorage.setItem("user", JSON.stringify(normalizedUser));
+    if (userData.token) {
+      localStorage.setItem("token", userData.token);
+    }
+
+    setUser(normalizedUser);
   };
 
   const logout = () => {
@@ -21,9 +36,16 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = (newData) => {
     const updated = { ...user, ...newData };
+
+    if (!updated.id && updated.userId) {
+      updated.id = updated.userId;
+    }
+
     localStorage.setItem("user", JSON.stringify(updated));
     setUser(updated);
+    console.log("AuthProvider: Usuario actualizado:", updated);
   };
+
   return (
     <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}

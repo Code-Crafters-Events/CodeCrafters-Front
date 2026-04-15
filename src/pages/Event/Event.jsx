@@ -1,23 +1,4 @@
-import useAuth from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import EventDetail from "../../components/organisms/EventDetail/EventDetail";
 
-function Event (){
-
-const { user } = useAuth();
-const navigate = useNavigate();
-
-const handleRegister = () => {
-  if (!user) {
-    navigate('/home/login');
-    return;
-  }
-  //logica registro del evento
-};
-    return(
-        <main>
-            <p>Info de evento</p>
-        </main>
-    )
-}
-
+const Event = () => <EventDetail />;
 export default Event;

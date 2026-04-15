@@ -5,25 +5,35 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-api.interceptors.request.use((config) => {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  if (user?.token) {
-    config.headers.Authorization = `Bearer ${user.token}`;
-  }
-  return config;
-});
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      if (user?.token) {
+        config.headers.Authorization = `Bearer ${user.token}`;
+      }
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    const isAuthRoute = err.config?.url?.startsWith("/api/auth/");
-
+    const isAuthRoute = err.config?.url?.includes("/api/auth/");
     if (err.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem("user");
-      window.location.href = "/";
+      localStorage.removeItem("token");
+      window.location.href = "/home/login";
     }
-
     return Promise.reject(err);
   },
 );
+
 export default api;

@@ -3,6 +3,7 @@ import styles from "./EventCard.module.css";
 import CategoryTag from "../../atoms/CategoryTag/CategoryTag";
 import PriceTag from "../../atoms/PriceTag/PriceTag";
 import EventTag from "../../atoms/EventTag/EventTag";
+import Complete from "../../../assets/Coml.png";
 
 const formatDate = (dateStr, timeStr) => {
   if (!dateStr) return "";
@@ -16,6 +17,10 @@ const formatDate = (dateStr, timeStr) => {
 
 const EventCard = ({ event }) => {
   const navigate = useNavigate();
+
+  const currentCount = event.attendeesCount ?? 0;
+  const isFull = event.maxAttendees > 0 && currentCount >= event.maxAttendees;
+
   const getTagStyles = () => {
     const type = String(event.type || "")
       .toLowerCase()
@@ -23,17 +28,14 @@ const EventCard = ({ event }) => {
     const category = String(event.category || "")
       .toLowerCase()
       .trim();
-    if (type === "online" || category === "online") {
+    if (type === "online" || category === "online")
       return { color: "#00FF9D", borderColor: "#00FF9D" };
-    }
-    if (type === "presencial" || category === "presencial") {
+    if (type === "presencial" || category === "presencial")
       return { color: "#FFB800", borderColor: "#FFB800" };
-    }
     return { color: "#A0A0A0", borderColor: "#A0A0A0" };
   };
 
   const { color, borderColor } = getTagStyles();
-
   const handleClick = () => navigate(`/home/info/${event.id}`);
 
   const getDisplayUser = () => {
@@ -43,13 +45,19 @@ const EventCard = ({ event }) => {
 
   return (
     <article
-      className={styles.card}
+      className={`${styles.card} ${isFull ? styles.fullEvent : ""}`}
       onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
       aria-label={`Ver detalles de ${event.title}`}
     >
+      {isFull && (
+        <div className={styles.soldOutBadge}>
+          <img src={Complete} alt="Evento Lleno" />
+        </div>
+      )}
+
       {event.imageUrl && (
         <div className={styles.imageWrapper}>
           <img
@@ -65,13 +73,10 @@ const EventCard = ({ event }) => {
 
       <div className={styles.body}>
         <CategoryTag category={event.type} />
-
         <h3 className={styles.title}>{event.title}</h3>
-
         {event.date && (
           <p className={styles.meta}>{formatDate(event.date, event.time)}</p>
         )}
-
         <p className={styles.meta}>@{getDisplayUser()}</p>
 
         {event.location && (
@@ -81,7 +86,9 @@ const EventCard = ({ event }) => {
         )}
 
         {event.maxAttendees && (
-          <p className={styles.meta}>Máx. {event.maxAttendees} plazas</p>
+          <p className={styles.meta}>
+            Plazas: {currentCount} / {event.maxAttendees}
+          </p>
         )}
 
         <div className={styles.footer}>
