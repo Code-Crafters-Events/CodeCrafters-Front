@@ -42,7 +42,11 @@ const AvatarUpload = ({
 
   return (
     <div className={styles.wrapper} role="group" aria-label="Foto de perfil">
-      <div className={styles.preview} style={{ borderRadius: shape === "square" ? "4px" : "50%" }} aria-hidden="true">
+      <div
+        className={styles.preview}
+        style={{ borderRadius: shape === "square" ? "4px" : "50%" }}
+        aria-hidden="true"
+      >
         {preview ? (
           <img src={preview} alt="Vista previa" />
         ) : (

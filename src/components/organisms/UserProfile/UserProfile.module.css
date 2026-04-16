@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  width: 100%;
+}
+
+.title {
+  font-family: var(--orb);
+  font-size: 20px;
+  color: white;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  background-color: var(--s1);
+  border: 1px solid var(--c8);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.saveAvatarBtn {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  padding: 6px 16px;
+  background-color: var(--c3);
+  color: #0a0a0a;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+}
+
+.saveAvatarBtn:hover {
+  opacity: 0.85;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 32px;
+  }
+
+  .actions {
+    flex-direction: row-reverse;
+    justify-content: space-around;
+  }
+}

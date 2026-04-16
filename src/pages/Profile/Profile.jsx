@@ -1,10 +1,3 @@
-
-function Profile(){
-    return(
-        <main>
-            <p>Aqui va el perfil</p>
-        </main>
-    )
-}
-
+import UserProfile from "../../components/organisms/UserProfile/UserProfile";
+const Profile = () => <UserProfile />;
 export default Profile;

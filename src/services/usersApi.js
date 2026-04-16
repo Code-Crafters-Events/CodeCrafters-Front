@@ -5,4 +5,5 @@ export const usersApi = {
   getById: (id) => api.get(`/api/v1/users/${id}`),
   update: (id, dto) => api.put(`/api/v1/users/${id}`, dto),
   delete: (id) => api.delete(`/api/v1/users/${id}`),
+  updateProfile: (id, dto) => api.patch(`/api/v1/users/${id}/profile`, dto),
 };

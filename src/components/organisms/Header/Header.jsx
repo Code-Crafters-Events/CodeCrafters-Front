@@ -3,20 +3,26 @@ import ButtonConnect from "../../atoms/ButtonConnect/ButtonConnect";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import LogoutIcon from "../../../assets/LOGOUT.png";
-import DefaultAvatar from "../../../assets/avatar.jpg";
 
 function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
   const getAvatarUrl = () => {
-    if (!user || !user.profileImage) return DefaultAvatar;
-    return user.profileImage.replace("localhost:5173", "localhost:8080");
+    if (!user || !user.profileImage) return null;
+    return user.profileImage.replace(
+      "http://localhost:5173",
+      "http://localhost:8080",
+    );
   };
 
   const handleLogout = () => {
     logout();
     navigate("/home");
   };
+
+  const avatarUrl = getAvatarUrl();
+  const initial = user?.name?.[0]?.toUpperCase() || "?";
 
   return (
     <header className={styles.header}>
@@ -74,16 +80,18 @@ function Header() {
         ) : (
           <div className={styles.field_logged}>
             <div className={styles.fieldAvatar}>
-              <img
-                src={getAvatarUrl()}
-                alt="avatar"
-                className={styles.avatar}
-                onError={(e) => {
-                  if (e.target.src !== DefaultAvatar) {
-                    e.target.src = DefaultAvatar;
-                  }
-                }}
-              />
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt="avatar"
+                  className={styles.avatar}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              ) : (
+                <div className={styles.avatarPlaceholder}>{initial}</div>
+              )}
             </div>
             <div className={styles.fieldLogout}>
               <img

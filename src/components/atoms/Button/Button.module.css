@@ -74,6 +74,8 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   transition: opacity 0.2s ease;
+  width: 210px;
+  height: 50px;
 }
 
 .danger:hover {
@@ -101,7 +103,7 @@
 
 .disabled {
   background-color: #2a2a2a !important;
-  color:red !important;
+  color: red !important;
   border: 1px solid #444444 !important;
   cursor: not-allowed !important;
   opacity: 0.7;
@@ -135,6 +137,25 @@
   color: #fff;
 }
 
+.delete {
+  font-family: var(--mono);
+  font-size: 20px;
+  padding: 6px 16px;
+  background-color: var(--c6);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transition: opacity 0.2s ease;
+  width: 210px;
+  height: 50px;
+}
+
+.delete:hover {
+  opacity: 0.85;
+}
+
 @media (min-width: 1024px) {
   .neon {
     width: 240px;
@@ -149,9 +170,14 @@
     height: 53px;
   }
 
-  .disabled{
+  .disabled {
     width: 240px;
     height: 53px;
     font-size: 18px;
+  }
+
+  .delete {
+    width: 240px;
+    height: 70px;
   }
 }
