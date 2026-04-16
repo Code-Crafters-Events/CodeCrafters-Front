@@ -6,11 +6,12 @@ import Button from "../../atoms/Button/Button";
 import Toast from "../../atoms/Toast/Toast";
 import AttendeesList from "../../molecules/AttendeesList/AttendeesList";
 import MessageModal from "../../organisms/MessageModal/MessageModal";
+import TicketModal from "../../molecules/TicketModal/TicketModal";
 import { eventsApi } from "../../../services/eventsApi";
 import { ticketsApi } from "../../../services/ticketsApi";
 import { AuthContext } from "../../../context/auth/AuthContext";
 import EventTag from "../../atoms/EventTag/EventTag";
-
+import { paymentsApi } from "../../../services/paymentsApi";
 import WarningIcon from "../../../assets/warning.png";
 
 const formatDate = (dateStr, timeStr) => {
@@ -37,6 +38,8 @@ const EventDetail = () => {
   const [toast, setToast] = useState(null);
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [registeredTicket, setRegisteredTicket] = useState(null);
 
   const isOwner = user?.id && event?.authorId === user.id;
   const currentCount = tickets.length > 0 ? tickets.length : totalTickets;
@@ -92,12 +95,34 @@ const EventDetail = () => {
     }
 
     setIsWorking(true);
+
     try {
-      await ticketsApi.register(user.id, id);
-      setToast({ message: "¡Te has apuntado correctamente!", type: "success" });
-      await loadTickets();
+      const res = await paymentsApi.createIntent({
+        userId: user.id,
+        eventId: id,
+      });
+
+      const paymentData = res.data;
+
+      if (!paymentData.clientSecret) {
+        setRegisteredTicket({
+          qrUrl: paymentData.qrUrl,
+          verificationCode: paymentData.verificationCode,
+          eventTitle: event.title,
+          date: formatDate(event.date, event.time),
+        });
+        setShowTicketModal(true);
+        setIsRegistered(true);
+        await loadTickets();
+      } else {
+        navigate(`/home/checkout/${id}`, {
+          state: { paymentData, eventTitle: event.title },
+        });
+      }
     } catch (error) {
-      setToast({ message: "Error al registrarse.", type: "error" });
+      const errorMsg =
+        error.response?.data?.message || "Error al procesar la solicitud.";
+      setToast({ message: errorMsg, type: "error" });
     } finally {
       setIsWorking(false);
     }
@@ -229,6 +254,13 @@ const EventDetail = () => {
           btnClass="neon"
           onConfirm={confirmUnregister}
           onClose={() => setShowConfirmModal(false)}
+        />
+      )}
+
+      {showTicketModal && (
+        <TicketModal
+          ticket={registeredTicket}
+          onClose={() => setShowTicketModal(false)}
         />
       )}
 

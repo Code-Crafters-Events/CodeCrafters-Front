@@ -1,0 +1,48 @@
+.form {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid #333;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.paymentElementContainer {
+  margin-bottom: 25px;
+  min-height: 200px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.errorMessage {
+  color: red;
+  background: rgba(255, 77, 77, 0.1);
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (min-width:1024px){
+  .errorMessage{
+    font-size: 20px;
+  }
+}

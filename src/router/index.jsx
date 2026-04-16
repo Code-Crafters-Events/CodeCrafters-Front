@@ -9,11 +9,11 @@ import RegEvent from "../pages/RegEvent/RegEvent";
 import Panel from "../pages/Panel/Panel";
 import Loading from "../components/organisms/LoadingScreen/LoadingScreen";
 import Tickets from "../pages/PanelTickets/PanelTickets";
-import Qr from "../pages/Qr/Qr";
+import Checkout from "../pages/Checkout/Checkout";
 import Profile from "../pages/Profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import Privacy from "../pages/Privacy/Privacy";
-import Prueba from "../pages/muestra";
+import Success from "../pages/Validations/Success";
 import { Component } from "react";
 
 export const router = createBrowserRouter([
@@ -44,9 +44,9 @@ export const router = createBrowserRouter([
       { path: "regEvent", Component: RegEvent },
       { path: "panel", Component: Panel },
       { path: "tickets", Component: Tickets },
-      { path: "qr", Component: Qr },
+      { path: "checkout/:id", Component: Checkout },
       { path: "profile", Component: Profile },
-      { path: "prueba", Component: Prueba },
+      { path: "success", Component: Success},
     ],
   },
 ]);

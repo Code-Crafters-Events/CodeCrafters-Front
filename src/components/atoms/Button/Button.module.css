@@ -156,6 +156,23 @@
   opacity: 0.85;
 }
 
+.cancelModal{
+  font-family: var(--orb);
+  padding: 14px 32px;
+  font-size: 20px;
+  font-weight: bold;
+  background: black;
+  color: white;
+  border: 1px solid var(--c4);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  font-size: 18px;
+  width: 300px;
+  cursor: pointer;
+}
+
 @media (min-width: 1024px) {
   .neon {
     width: 240px;

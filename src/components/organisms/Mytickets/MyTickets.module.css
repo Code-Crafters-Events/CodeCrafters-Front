@@ -1,0 +1,131 @@
+.panel {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--mono);
+  color: #00ff9d;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.subtitle {
+  color: #888;
+  font-family: var(--mono);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.ticketCard {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.ticketCard:hover {
+  transform: translateY(-5px);
+  border-color: #00ff9d;
+  box-shadow: 0 5px 15px rgba(0, 255, 157, 0.1);
+}
+
+.cardHeader h3 {
+  margin: 0.5rem 0 0 0;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.statusBadge {
+  background: rgba(0, 255, 157, 0.1);
+  color: #00ff9d;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  border: 1px solid #00ff9d;
+}
+
+.qrPreview {
+  position: relative;
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.qrPreview img {
+  width: 150px;
+  height: 150px;
+  transition: filter 0.3s ease;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 255, 157, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.overlay span {
+  color: #000;
+  font-weight: bold;
+  font-family: var(--mono);
+}
+
+.qrPreview:hover .overlay {
+  opacity: 1;
+}
+
+.qrPreview:hover img {
+  filter: blur(2px);
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem;
+  color: #888;
+}
+
+@media (min-width: 1024px) {
+  .cardActions {
+    flex-direction: row;
+  }
+
+  .cardActions button {
+    flex: 1;
+  }
+}
