@@ -37,3 +37,5 @@ const CheckoutContainer = ({ clientSecret, eventTitle, amount }) => {
     </div>
   );
 };
+
+export default CheckoutContainer;
