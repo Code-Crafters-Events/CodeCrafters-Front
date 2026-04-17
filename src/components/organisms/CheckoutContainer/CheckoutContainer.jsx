@@ -26,10 +26,8 @@ const CheckoutContainer = ({ clientSecret, eventTitle, amount }) => {
   return (
     <div className={styles.checkoutWrapper}>
       <h3 className={styles.title}>Confirmar Reserva</h3>
-      <p className={styles.priceInfo}>
-        Evento: <strong>{eventTitle}</strong> <br />
-        Total: <span style={{color: '#00ff9d'}}>{amount}€</span>
-      </p>
+      <p className={styles.priceInfo}>Evento: <strong>{eventTitle}</strong></p>
+      <p className={styles.priceInfo}>Total: <span style={{color: '#00ff9d'}}>{amount}€</span></p>
       
       <Elements stripe={stripePromise} options={options}>
         <CheckoutForm />
