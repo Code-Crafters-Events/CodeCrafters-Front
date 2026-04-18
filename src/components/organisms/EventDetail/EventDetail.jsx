@@ -24,6 +24,10 @@ const formatDate = (dateStr, timeStr) => {
   return `${day} ${month} ${year}${time}`;
 };
 
+const VALID_PAYMENT_STATUSES = ["COMPLETED", "FREE"];
+const isValidPayment = (ticket) =>
+  VALID_PAYMENT_STATUSES.includes(ticket.paymentStatus);
+
 const EventDetail = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
@@ -42,15 +46,16 @@ const EventDetail = () => {
   const [registeredTicket, setRegisteredTicket] = useState(null);
 
   const isOwner = user?.id && event?.authorId === user.id;
-  const currentCount = tickets.length > 0 ? tickets.length : totalTickets;
+
+  const currentCount = tickets.filter(isValidPayment).length;
   const isFull = event?.maxAttendees > 0 && currentCount >= event?.maxAttendees;
 
   const loadTickets = useCallback(async () => {
     const storageUser = JSON.parse(localStorage.getItem("user") || "null");
     const currentUserId = user?.id || storageUser?.id;
-    const currentToken = localStorage.getItem("token");
 
-    if (!id || !currentToken || !currentUserId) return;
+    if (!id) return;
+
     try {
       const res = await ticketsApi.getByEvent(id, 0, 100);
       const data = res.data;
@@ -59,26 +64,70 @@ const EventDetail = () => {
       setTickets(list);
       setTotalTickets(data.totalElements ?? list.length);
 
-      const myTicket = list.find((t) => t.userId === currentUserId);
-      setIsRegistered(Boolean(myTicket));
+      if (currentUserId) {
+        const myTicket = list.find((t) => t.userId === currentUserId);
+        setIsRegistered(Boolean(myTicket && isValidPayment(myTicket)));
+      }
     } catch (error) {
       console.error("Error al cargar asistentes:", error);
     }
   }, [id, user?.id]);
 
   useEffect(() => {
-    if (!id) return;
+    let isMounted = true;
 
-    eventsApi
-      .getById(id)
-      .then((res) => setEvent(res.data))
-      .catch(() =>
-        setToast({ message: "No se pudo cargar el evento.", type: "error" }),
-      )
-      .finally(() => setIsLoading(false));
+    const fetchEventData = async () => {
+      if (!id) return;
+      setIsLoading(true);
+      try {
+        const res = await eventsApi.getById(id);
+        if (isMounted) {
+          setEvent(res.data);
+          await loadTickets();
+        }
+      } catch (err) {
+        console.error("Error al cargar evento:", err);
+        setToast({ message: "No se pudo cargar el evento.", type: "error" });
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
 
-    loadTickets();
+    fetchEventData();
+    return () => {
+      isMounted = false;
+    };
   }, [id, loadTickets]);
+
+  useEffect(() => {
+    let pollInterval;
+    let pollCount = 0;
+    const maxPolls = 120;
+
+    const startPolling = async () => {
+      pollCount = 0;
+      pollInterval = setInterval(async () => {
+        pollCount++;
+        await loadTickets();
+
+        if (pollCount >= maxPolls) {
+          clearInterval(pollInterval);
+        }
+      }, 500);
+    };
+    const handleFocus = () => {
+      startPolling();
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    startPolling();
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      if (pollInterval) clearInterval(pollInterval);
+    };
+  }, [loadTickets]);
 
   const handleRegister = async () => {
     if (!user) {
@@ -146,6 +195,7 @@ const EventDetail = () => {
   if (!event) return <p className={styles.loading}>Evento no encontrado.</p>;
 
   const locationStr = event.location?.address ?? event.location?.venue ?? null;
+  const confirmedAttendees = tickets.filter(isValidPayment);
 
   return (
     <section className={styles.container}>
@@ -167,7 +217,10 @@ const EventDetail = () => {
             {locationStr && <p className={styles.location}>{locationStr}</p>}
 
             {user && (
-              <AttendeesList tickets={tickets} totalCount={currentCount} />
+              <AttendeesList
+                tickets={confirmedAttendees}
+                totalCount={confirmedAttendees.length}
+              />
             )}
           </div>
 

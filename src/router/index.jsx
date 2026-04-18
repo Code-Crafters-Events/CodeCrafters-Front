@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
       { path: "register", Component: Register },
       { path: "community", Component: Community },
       { path: "info/:id", Component: Event },
-      { path: 'privacy', Component: Privacy },
+      { path: "privacy", Component: Privacy },
     ],
   },
   {
@@ -43,10 +43,10 @@ export const router = createBrowserRouter([
     children: [
       { path: "regEvent", Component: RegEvent },
       { path: "panel", Component: Panel },
-      { path: "tickets", Component: Tickets },
+      { path: "my-tickets", Component: Tickets },
       { path: "checkout/:id", Component: Checkout },
       { path: "profile", Component: Profile },
-      { path: "success", Component: Success},
+      { path: "success", Component: Success },
     ],
   },
 ]);

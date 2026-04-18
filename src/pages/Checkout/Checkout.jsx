@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import CheckoutContainer from "../../components/organisms/CheckoutContainer/CheckoutContainer";
+import styles from "./Checkout.module.css";
 
 function Checkout() {
   const location = useLocation();
@@ -8,7 +9,7 @@ function Checkout() {
 
   if (!paymentData?.clientSecret) {
     return (
-      <main style={{ color: "white", textAlign: "center", padding: "50px" }}>
+      <main role="main" className={styles.wrapperMain}>
         <h2>Sesión de pago no válida</h2>
         <p>Por favor, vuelve al evento e intenta apuntarte de nuevo.</p>
       </main>

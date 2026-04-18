@@ -4,27 +4,26 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CheckoutForm.module.css";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("1. Botón clickeado");
 
     if (!stripe || !elements) {
-      console.error("2. Error: Stripe o Elements no cargados");
+      console.error("Error: Stripe o Elements no cargados");
       return;
     }
 
     setIsLoading(true);
     setMessage(null);
-
-    console.log("3. Intentando confirmar pago...");
 
     try {
       const { error } = await stripe.confirmPayment({
@@ -35,7 +34,7 @@ const CheckoutForm = () => {
       });
 
       if (error) {
-        console.error("4. Error de Stripe:", error);
+        console.error("Error de Stripe:", error);
         if (error.type === "card_error" || error.type === "validation_error") {
           setMessage(error.message);
         } else {
@@ -43,12 +42,16 @@ const CheckoutForm = () => {
         }
       }
     } catch (err) {
-      console.error("5. Error catastrófico en el catch:", err);
+      console.error("Error en el catch:", err);
       setMessage("Error de conexión con el servidor.");
     } finally {
-      console.log("6. Finalizando estado de carga");
+      console.log("Finalizando estado de carga");
       setIsLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    navigate(-1); 
   };
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -63,6 +66,14 @@ const CheckoutForm = () => {
           className={styles.botonNeon}
         >
           {isLoading ? "Procesando..." : "Finalizar Pago"}
+        </button>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className={styles.cancel}
+          disabled={isLoading}
+        >
+        Cancelar
         </button>
       </div>
     </form>
