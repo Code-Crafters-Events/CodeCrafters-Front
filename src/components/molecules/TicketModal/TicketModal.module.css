@@ -15,7 +15,7 @@
 
 .modal {
   background: #121212;
-  border: 1px solid #00ff9d;
+  border: 1px solid var(--c3);
   border-radius: 16px;
   padding: 1.5rem;
   width: 100%;
@@ -26,7 +26,7 @@
 }
 
 .title {
-  color: #00ff9d;
+  color: var(--c3);
   font-size: 20px;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
@@ -39,13 +39,13 @@
 }
 
 .subtitle strong {
-  color: #00ff9d;
+  color: var(--c3);
   display: block;
   font-size: 16px;
 }
 
 .qrContainer {
-  background: #ffffff;
+  background: white;
   padding: 1.5rem;
   border-radius: 12px;
   margin: 0 auto 1.5rem;
@@ -75,6 +75,48 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.navigationActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--c9);
+}
+
+.navigationActions button {
+  width: 100%;
+}
+
+:global(.secondary) {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 157, 0.1),
+    rgba(255, 184, 0, 0.1)
+  );
+  color: var(--c3);
+  border: 1px solid var(--c8);
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+:global(.secondary:hover:not(:disabled)) {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 157, 0.2),
+    rgba(255, 184, 0, 0.2)
+  );
+  box-shadow: 0 0 15px var(--c8);
+}
+
+:global(.secondary:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (min-width: 1024px) {
@@ -110,6 +152,15 @@
 
   .actions button {
     flex: 1;
+  }
+
+  .navigationActions {
+    gap: 8px;
+  }
+
+  .navigationActions button {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
 

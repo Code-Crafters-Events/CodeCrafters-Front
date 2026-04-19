@@ -1,109 +1,125 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useStripe } from "@stripe/react-stripe-js";
+import { AuthContext } from "../../../context/auth/AuthContext";
+import { ticketsApi } from "../../../services/ticketsApi";
+import { eventsApi } from "../../../services/eventsApi";
+import { formatDate } from "../../../utils/dateFormatter";
 import styles from "./PaymentSuccess.module.css";
 import Button from "../../atoms/Button/Button";
+import TicketModal from "../../molecules/TicketModal/TicketModal";
 
 const PaymentSuccess = () => {
   const stripe = useStripe();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("Verificando tu pago...");
+  const [ticket, setTicket] = useState(null);
+  const [showTicketModal, setShowTicketModal] = useState(false);
   const hasAttemptedRef = useRef(false);
 
+  const loadUserTicket = useCallback(async (userId) => {
+    let attempts = 0;
+    const maxAttempts = 30;
+
+    const tryLoadTicket = async () => {
+      try {
+        const res = await ticketsApi.getByUser(userId, 0, 10);
+        const tickets = res.data.content ?? res.data;
+        const myTicket = [...tickets]
+          .sort((a, b) => b.id - a.id)
+          .find((t) => t.paymentStatus === "COMPLETED");
+
+        if (myTicket) {
+          const eventRes = await eventsApi.getById(myTicket.eventId);
+          const eventData = eventRes.data;
+          const formattedDate = formatDate(eventData.date, eventData.time);
+
+          setTicket({
+            id: myTicket.id,
+            qrUrl: myTicket.qrUrl,
+            eventId: myTicket.eventId,
+            verificationCode: myTicket.verificationCode || myTicket.id,
+            eventTitle: eventData.title,
+            date: formattedDate,
+          });
+
+          setStatus("success");
+          setMessage("¡Pago Completado con Éxito!");
+          setShowTicketModal(true);
+          return;
+        }
+
+        if (attempts < maxAttempts) {
+          attempts++;
+          console.log(`Ticket no encontrado, reintentando...`);
+          setTimeout(tryLoadTicket, 500);
+        } else {
+          console.warn("Ticket no encontrado después de 15 segundos");
+          setStatus("success");
+          setMessage(
+            "Pago confirmado. Si no ves tu entrada, revisa 'Mis Tickets'.",
+          );
+        }
+      } catch (error) {
+        console.error("Error recuperando ticket:", error);
+        if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(tryLoadTicket, 1000);
+        }
+      }
+    };
+    tryLoadTicket();
+  }, []);
+
   useEffect(() => {
-
     const clientSecret = searchParams.get("payment_intent_client_secret");
-
-    if (hasAttemptedRef.current) {
-      console.log("Ya se intentó verificar el pago antes");
+    if (!stripe || !clientSecret || !user?.id || hasAttemptedRef.current)
       return;
-    }
-
-    if (!clientSecret) {
-      setStatus("error");
-      setMessage("No se encontró información del pago.");
-      hasAttemptedRef.current = true;
-      return;
-    }
-
-    if (!stripe) {
-      console.log("Esperando a que Stripe cargue...");
-      return;
-    }
 
     hasAttemptedRef.current = true;
+
     stripe
       .retrievePaymentIntent(clientSecret)
       .then(({ paymentIntent }) => {
+        console.log("PaymentIntent status:", paymentIntent.status);
 
-        switch (paymentIntent.status) {
-          case "succeeded":
-            console.log("Pago exitoso - Cambiando estado a success");
-            setStatus("success");
-            setMessage("Pago Completado con Éxito");
-            break;
-
-          case "processing":
-            console.log("Pago en proceso");
-            setStatus("processing");
-            setMessage(
-              "Tu pago se está procesando. Te avisaremos cuando se complete.",
-            );
-            break;
-
-          case "requires_payment_method":
-            setStatus("error");
-            setMessage(
-              "El pago no se pudo realizar. Por favor, inténtalo de nuevo.",
-            );
-            break;
-
-          default:
-            console.log("Estado desconocido:", paymentIntent.status);
-            setStatus("error");
-            setMessage("Algo salió mal.");
-            break;
+        if (paymentIntent.status === "succeeded") {
+          console.log("Pago exitoso - Cargando ticket del usuario");
+          loadUserTicket(user.id);
+        } else {
+          setStatus("error");
+          setMessage("No se pudo verificar el pago.");
         }
       })
       .catch((err) => {
-        console.error("Error en retrievePaymentIntent:", err);
+        console.error("Error con Stripe:", err);
         setStatus("error");
-        setMessage("Error al verificar tu pago. Por favor intenta de nuevo.");
+        setMessage("Error de conexión con Stripe.");
       });
-  }, [stripe, searchParams]);
+  }, [stripe, searchParams, user?.id, loadUserTicket]);
 
-  if (status === "loading")
+  if (status === "loading") {
     return (
       <div className={styles.loadingOverlay}>
         <div className={styles.spinner}></div>
-        <p className={styles.loadingText}>Verificando tu pago...</p>
+        <p className={styles.loadingText}>Generando tu entrada...</p>
       </div>
     );
+  }
 
   return (
     <div className={styles.container}>
       <div className={`${styles.card} ${styles[status]}`}>
         <div className={styles.icon}>{status === "success" ? "✓" : "✕"}</div>
-
         <h1>{message}</h1>
-
-        {status === "success" ? (
-          <p className={styles.pNotified}>
-            Tu entrada ya se está generando. Podrás verla en tu perfil en unos
-            instantes.
-          </p>
-        ) : (
-          <p className={styles.pNotified}>Si el problema persiste, contacta con soporte.</p>
-        )}
-
         <div className={styles.actions}>
           <Button
             text="Ir a Mis Entradas"
             BtnClass="neon"
-            disabled={status !== "success"}
             onClick={() => navigate("/home/my-tickets")}
           />
           <Button
@@ -113,6 +129,13 @@ const PaymentSuccess = () => {
           />
         </div>
       </div>
+
+      {showTicketModal && ticket && (
+        <TicketModal
+          ticket={ticket}
+          onClose={() => setShowTicketModal(false)}
+        />
+      )}
     </div>
   );
 };

@@ -24,7 +24,7 @@
   box-shadow: none;
 }
 
-.cancel {
+.cancel, .secondary {
   font-family: var(--orb);
   padding: 14px 32px;
   font-size: 20px;
@@ -41,7 +41,7 @@
   cursor: pointer;
 }
 
-.cancel:hover {
+.cancel:hover, .secondary:hover {
   border-color: #6a3aaa;
   color: #fff;
 }
@@ -178,7 +178,7 @@
     width: 240px;
   }
 
-  .cancel {
+  .cancel,.secondary {
     width: 240px;
   }
 

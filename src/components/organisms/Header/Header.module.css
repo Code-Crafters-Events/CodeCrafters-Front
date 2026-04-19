@@ -7,6 +7,13 @@ header {
   min-height: 180px;
 }
 
+.headerMain {
+  color: var(--c);
+  font-family: var(--orb);
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+}
 .wrapperTitles {
   flex: 1;
   display: flex;
@@ -29,14 +36,6 @@ header {
   gap: 10px;
   margin-top: 20px;
   order: 3;
-}
-
-h1 {
-  color: var(--c);
-  font-family: var(--orb);
-  font-weight: bold;
-  font-size: 18px;
-  margin: 0;
 }
 
 .hyphon {
@@ -132,7 +131,7 @@ h2 {
     padding-top: 0;
   }
 
-  h1 {
+  .headerMain {
     font-size: 32px;
   }
   h2 {

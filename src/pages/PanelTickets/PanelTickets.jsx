@@ -1,9 +1,10 @@
+import MyTickets from "../../components/organisms/Mytickets/MyTickets";
 
-function PanelTickets(){
+const PanelTickets = ()=>{
     return(
-        <main>
-            <p>Panel de tickets</p>
-        </main>
+        <>
+            <MyTickets/>
+        </>
     )
 }
 

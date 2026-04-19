@@ -28,7 +28,7 @@ function Header() {
     <header className={styles.header}>
       <div className={styles.wrapperTitles}>
         <Link to="/home" className={styles.homeLink}>
-          <h1>
+          <h1 className={styles.headerMain}>
             CODE<span className={styles.hyphon}>_</span>CRAFTERS
           </h1>
         </Link>
@@ -53,7 +53,7 @@ function Header() {
           COMUNIDAD
         </NavLink>
         <NavLink
-          to="/home/tickets"
+          to="/home/my-tickets"
           className={({ isActive }) =>
             isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
           }

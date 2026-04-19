@@ -20,7 +20,7 @@ const formatDate = (dateStr, timeStr) => {
   const day = date.getDate().toString().padStart(2, "0");
   const month = date.toLocaleString("es-ES", { month: "short" }).toUpperCase();
   const year = date.getFullYear();
-  const time = timeStr ? ` · ${timeStr.slice(0, 5)}h GMT+2` : "";
+  const time = timeStr ? ` · ${timeStr.slice(0, 5)}h` : "";
   return `${day} ${month} ${year}${time}`;
 };
 
@@ -155,9 +155,11 @@ const EventDetail = () => {
 
       if (!paymentData.clientSecret) {
         setRegisteredTicket({
+          id: paymentData.ticketId,
           qrUrl: paymentData.qrUrl,
           verificationCode: paymentData.verificationCode,
           eventTitle: event.title,
+          eventId: event.id,
           date: formatDate(event.date, event.time),
         });
         setShowTicketModal(true);
