@@ -12,12 +12,12 @@ export const eventsApi = {
   search: (filters, page = 0, size = 15) =>
     api.get("/api/v1/events/search", { params: { ...filters, page, size } }),
 
-  create: (dto, userId) =>
-    api.post("/api/v1/events", dto, { params: { userId } }),
+  create: (dto) => 
+    api.post("/api/v1/events", dto),
 
-  update: (id, dto, userId) =>
-    api.put(`/api/v1/events/${id}`, dto, { params: { userId } }),
+  update: (id, dto) => 
+    api.put(`/api/v1/events/${id}`, dto),
 
-  delete: (id, userId) =>
-    api.delete(`/api/v1/events/${id}`, { params: { userId } }),
+  delete: (id) => 
+    api.delete(`/api/v1/events/${id}`),
 };

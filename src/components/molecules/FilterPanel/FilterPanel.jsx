@@ -13,7 +13,7 @@ const INITIAL_FILTERS = {
   priceMin: "",
   priceMax: "",
   title: "",
-  authorName: "",
+  authorAlias: "",
   dateFrom: "",
   dateTo: "",
 };
@@ -37,7 +37,7 @@ const FilterPanel = ({ isOpen, onClose, onSearch }) => {
     const params = {
       category: filters.category || undefined,
       title: filters.title.trim() || undefined,
-      authorName: filters.authorName.trim() || undefined,
+      authorAlias: filters.authorAlias.trim() || undefined,
       dateFrom: filters.dateFrom || undefined,
       dateTo: filters.dateTo || undefined,
       priceMin: filters.gratis ? "0" : filters.priceMin || undefined,
@@ -147,13 +147,13 @@ const FilterPanel = ({ isOpen, onClose, onSearch }) => {
         </div>
 
         <div className={styles.group}>
-          <p className={styles.groupLabel}>Nombre usuario</p>
+          <p className={styles.groupLabel}>Alias</p>
           <input
             type="text"
-            name="authorName"
-            value={filters.authorName}
+            name="authorAlias"
+            value={filters.authorAlias}
             onChange={handleChange}
-            placeholder="Buscar por autor..."
+            placeholder="Buscar por alias..."
             className={styles.input}
           />
         </div>

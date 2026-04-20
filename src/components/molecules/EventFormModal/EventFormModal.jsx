@@ -15,20 +15,56 @@ const TYPES = ["ONLINE", "PRESENCIAL"];
 const validate = (fields) => {
   const errors = {};
 
-  if (!fields.title.trim()) errors.title = "El título es obligatorio";
+  if (!fields.title.trim()) {
+    errors.title = "El título es obligatorio";
+  } else if (fields.title.length < 5) {
+    errors.title = "Mínimo 5 caracteres";
+  }
 
   if (!fields.date) {
     errors.date = "La fecha es obligatoria";
-  } else if (!/^\d{4}-\d{2}-\d{2}$/.test(fields.date)) {
-    errors.date = "Formato: AAAA-MM-DD";
+  }
+
+  if (!fields.time) {
+    errors.time = "La hora es obligatoria";
   }
 
   if (!fields.category) errors.category = "Selecciona una categoría";
-
   if (!fields.type) errors.type = "Selecciona una modalidad";
 
-  if (fields.price !== "" && isNaN(Number(fields.price)))
-    errors.price = "El precio debe ser un número";
+  if (!fields.location.trim()) {
+    errors.location = fields.type === "ONLINE" ? "El enlace es obligatorio" : "La dirección es obligatoria";
+  } else if (fields.type === "ONLINE") {
+    const urlPattern = /^(https?:\/\/)[^\s$.?#].[^\s]*$/;
+    if (!urlPattern.test(fields.location.trim())) {
+      errors.location = "URL inválida (usa http:// o https://)";
+    }
+  }
+  if (fields.type === "PRESENCIAL") {
+    if (!fields.city.trim()) errors.city = "La ciudad es obligatoria";
+    if (!fields.country.trim()) errors.country = "El país es obligatorio";
+  }
+  if (!fields.maxAttendees) {
+    errors.maxAttendees = "Indica el número de plazas";
+  } else if (Number(fields.maxAttendees) <= 0) {
+    errors.maxAttendees = "Debe haber al menos 1 plaza";
+  } else if (Number(fields.maxAttendees) > 1000) {
+    errors.maxAttendees = "Máximo 1000 plazas";
+  }
+  if (fields.price === "") {
+    errors.price = "El precio es obligatorio (pon 0 si es gratis)";
+  } else if (isNaN(Number(fields.price))) {
+    errors.price = "Debe ser un número";
+  } else if (Number(fields.price) < 0) {
+    errors.price = "El precio no puede ser negativo";
+  }
+  if (!fields.description.trim()) {
+    errors.description = "La descripción es obligatoria";
+  } else if (fields.description.length < 10) {
+    errors.description = "Descripción demasiado corta (mín. 10 carac.)";
+  } else if (fields.description.length > 255) {
+    errors.description = "Máximo 255 caracteres (límite del servidor)";
+  }
 
   return errors;
 };
@@ -42,6 +78,8 @@ const INITIAL = {
   time: "",
   maxAttendees: "",
   location: "",
+  city: "",
+  country: "",
   price: "",
 };
 
@@ -75,13 +113,11 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
         maxAttendees:
           event.maxAttendees != null ? String(event.maxAttendees) : "",
         location: event.location?.address ?? event.location?.venue ?? "",
+        city: event.location?.city ?? "",
+        country: event.location?.country ?? "",
         price: event.price != null ? String(event.price) : "",
       });
-      if (event.imageUrl) setImagePreview(event.imageUrl);
-      else {
-        setImagePreview(null);
-        setImageFile(null);
-      }
+      setImagePreview(event.imageUrl ?? null);
     } else {
       setFields(INITIAL);
       setImageFile(null);
@@ -128,7 +164,10 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setTouched(Object.fromEntries(Object.keys(fields).map((k) => [k, true])));
+    const allTouched = Object.fromEntries(
+      Object.keys(fields).map((k) => [k, true]),
+    );
+    setTouched(allTouched);
 
     const frontErrors = validate(fields);
     if (Object.keys(frontErrors).length > 0) return;
@@ -143,31 +182,30 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
         try {
           const locRes = await locationsApi.create({
             venue: fields.type === "ONLINE" ? "Online" : fields.location.trim(),
-            address:
-              fields.type === "PRESENCIAL" ? fields.location.trim() : null,
-            city: null,
-            province: null,
-            country: null,
-            zipCode: null,
-            latitude: null,
-            longitude: null,
+            address: fields.location.trim(),
+            city: fields.type === "PRESENCIAL" ? fields.city.trim() : "Online",
+            country:
+              fields.type === "PRESENCIAL" ? fields.country.trim() : "Online",
+            zipCode: "00000",
+            latitude: 0,
+            longitude: 0,
           });
           locationId = locRes.data.id;
-        } catch {
-          console.warn("No se pudo guardar la ubicación.");
+        } catch (locErr) {
+          console.warn("Error en locationsApi:", locErr);
         }
       }
 
       const payload = {
         title: fields.title.trim(),
-        description: fields.description.trim() || null,
-        type: fields.category,
+        description: fields.description.trim() || "",
         category: fields.type,
+        type: fields.category,
         date: fields.date,
-        time: fields.time || null,
-        maxAttendees: fields.maxAttendees ? Number(fields.maxAttendees) : null,
-        locationId,
-        price: fields.price !== "" ? Number(fields.price) : null,
+        time: fields.time || "00:00",
+        maxAttendees: fields.maxAttendees ? Number(fields.maxAttendees) : 0,
+        locationId: locationId,
+        price: fields.price !== "" ? Number(fields.price) : 0,
         imageUrl: event?.imageUrl ?? null,
       };
 
@@ -189,10 +227,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
           );
           savedEvent = { ...savedEvent, imageUrl: imgRes.data.imageUrl };
         } catch (imgError) {
-          console.error(
-            "Error subiendo imagen:",
-            imgError.response?.data ?? imgError.message,
-          );
+          console.error("Error subiendo imagen:", imgError);
         }
       }
 
@@ -201,12 +236,11 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
     } catch (error) {
       const status = error.response?.status;
       const data = error.response?.data;
-
-      if (status === 400 && data && typeof data === "object") {
+      if (status === 400 && data) {
         setServerErrors(data);
       } else {
         setServerErrors({
-          _global: `Error inesperado (${status ?? "sin conexión"}). Inténtalo de nuevo.`,
+          _global: `Error del servidor (${status}). Revisa que todos los campos sean correctos.`,
         });
       }
     } finally {
@@ -217,12 +251,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
   return (
     <div
       className={styles.overlay}
-      role="dialog"
-      aria-modal="true"
-      aria-label={isEditing ? "Editar evento" : "Crear evento"}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className={styles.modal}>
         <h2 className={styles.title}>
@@ -230,9 +259,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
         </h2>
 
         {serverErrors._global && (
-          <p className={styles.globalError} role="alert">
-            {serverErrors._global}
-          </p>
+          <p className={styles.globalError}>{serverErrors._global}</p>
         )}
 
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -259,76 +286,90 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
               label="Título del evento"
               name="title"
               value={fields.title}
-              type="text"
-              placeholder="Nombre del evento"
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("title")}
             />
-
             <FormField
               label={useDateText ? "Fecha (AAAA-MM-DD)" : "Fecha"}
               name="date"
-              value={fields.date}
               type={useDateText ? "text" : "date"}
-              placeholder={useDateText ? "2026-12-31" : undefined}
-              pattern={useDateText ? "\\d{4}-\\d{2}-\\d{2}" : undefined}
-              inputMode={useDateText ? "numeric" : undefined}
+              value={fields.date}
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("date")}
             />
-
             <FormField
               label="Hora"
               name="time"
-              value={fields.time}
               type="time"
+              value={fields.time}
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("time")}
             />
-
             <FormField
               label="Máx. plazas"
               name="maxAttendees"
-              value={fields.maxAttendees}
               type="number"
-              placeholder="Ej: 50"
+              value={fields.maxAttendees}
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("maxAttendees")}
             />
 
             <FormField
-              label={
-                fields.type === "ONLINE"
-                  ? "Enlace (Zoom, Meet...)"
-                  : "Dirección"
-              }
+              label={fields.type === "ONLINE" ? "Enlace (URL)" : "Dirección"}
               name="location"
               value={fields.location}
-              type={fields.type === "ONLINE" ? "url" : "text"}
-              placeholder={
-                fields.type === "ONLINE"
-                  ? "https://zoom.us/..."
-                  : "Calle, ciudad..."
-              }
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("location")}
             />
 
-            <FormField
-              label="Descripción"
-              name="description"
-              value={fields.description}
-              type="text"
-              placeholder="Describe el evento..."
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={getError("description")}
-            />
+            {fields.type === "PRESENCIAL" && (
+              <>
+                <FormField
+                  label="Ciudad"
+                  name="city"
+                  value={fields.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={getError("city")}
+                />
+                <FormField
+                  label="País"
+                  name="country"
+                  value={fields.country}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={getError("country")}
+                />
+              </>
+            )}
+
+            <div className={styles.descriptionWrapper}>
+              <FormField
+                label="Descripción"
+                name="description"
+                value={fields.description}
+                type="text"
+                maxLength={255}
+                placeholder="Describe el evento..."
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={getError("description")}
+              />
+              <small
+                className={
+                  fields.description.length > 255
+                    ? styles.charError
+                    : styles.charCounter
+                }
+              >
+                {fields.description.length}/255 caracteres
+              </small>
+            </div>
           </div>
 
           <div className={styles.group}>
@@ -351,43 +392,33 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
 
           <div className={styles.priceRow}>
             <span className={styles.priceLabel}>Precio:</span>
-            <div className={styles.priceInput}>
-              <FormField
-                label=""
-                name="price"
-                value={fields.price}
-                type="number"
-                placeholder="0 = Gratuito"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={getError("price")}
-              />
-            </div>
+            <FormField
+              label=""
+              name="price"
+              type="number"
+              value={fields.price}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={getError("price")}
+            />
           </div>
 
           <AvatarUpload
             preview={imagePreview}
-            placeholderLetter="+"
             onFileSelect={handleImageSelect}
             onRemove={handleImageRemove}
             error={imageError}
-            hint="JPG, PNG, WEBP · Máx. 5 MB"
             shape="square"
           />
 
           <div className={styles.actions}>
             <Button
               text={
-                isLoading
-                  ? "Guardando..."
-                  : isEditing
-                    ? "Editar"
-                    : "Guardar evento"
+                isLoading ? "Guardando..." : isEditing ? "Editar" : "Guardar"
               }
               BtnClass="neon"
               type="submit"
               disabled={isLoading}
-              aria-busy={isLoading}
             />
             <Button
               text="Volver"

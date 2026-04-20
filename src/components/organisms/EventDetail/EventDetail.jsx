@@ -47,29 +47,33 @@ const EventDetail = () => {
 
   const isOwner = user?.id && event?.authorId === user.id;
 
-  const currentCount = tickets.filter(isValidPayment).length;
+  const currentCount = Array.isArray(tickets)
+    ? tickets.filter(isValidPayment).length
+    : 0;
   const isFull = event?.maxAttendees > 0 && currentCount >= event?.maxAttendees;
 
   const loadTickets = useCallback(async () => {
-    const storageUser = JSON.parse(localStorage.getItem("user") || "null");
-    const currentUserId = user?.id || storageUser?.id;
-
     if (!id) return;
 
     try {
       const res = await ticketsApi.getByEvent(id, 0, 100);
       const data = res.data;
-      const list = data.content ?? data;
+      const list = Array.isArray(data.content)
+        ? data.content
+        : Array.isArray(data)
+          ? data
+          : [];
 
       setTickets(list);
       setTotalTickets(data.totalElements ?? list.length);
 
-      if (currentUserId) {
-        const myTicket = list.find((t) => t.userId === currentUserId);
+      if (user?.id) {
+        const myTicket = list.find((t) => t.userId === user.id);
         setIsRegistered(Boolean(myTicket && isValidPayment(myTicket)));
       }
     } catch (error) {
       console.error("Error al cargar asistentes:", error);
+      setTickets([]);
     }
   }, [id, user?.id]);
 
@@ -183,11 +187,12 @@ const EventDetail = () => {
     setShowConfirmModal(false);
     setIsWorking(true);
     try {
-      await ticketsApi.unregister(user.id, id);
+      await ticketsApi.unregister(id);
       setToast({ message: "Asistencia cancelada.", type: "success" });
       await loadTickets();
-    } catch {
-      setToast({ message: "Error al cancelar.", type: "error" });
+    } catch (error) {
+      const msg = error.response?.data?.message || "Error al cancelar.";
+      setToast({ message: msg, type: "error" });
     } finally {
       setIsWorking(false);
     }
@@ -196,8 +201,19 @@ const EventDetail = () => {
   if (isLoading) return <p className={styles.loading}>Cargando evento...</p>;
   if (!event) return <p className={styles.loading}>Evento no encontrado.</p>;
 
-  const locationStr = event.location?.address ?? event.location?.venue ?? null;
-  const confirmedAttendees = tickets.filter(isValidPayment);
+  const locationStr = event.location
+    ? [
+        event.location.address || event.location.venue,
+        event.location.city,
+        event.location.country,
+      ]
+        .filter((val) => val && val.trim() !== "")
+        .join(", ")
+    : null;
+
+  const confirmedAttendees = Array.isArray(tickets)
+    ? tickets.filter(isValidPayment)
+    : [];
 
   return (
     <section className={styles.container}>
@@ -216,7 +232,11 @@ const EventDetail = () => {
             {event.description && (
               <p className={styles.description}>{event.description}</p>
             )}
-            {locationStr && <p className={styles.location}>{locationStr}</p>}
+            {locationStr && (
+              <p className={styles.location}>
+                <strong>Ubicación: </strong> {locationStr}
+              </p>
+            )}
 
             {user && (
               <AttendeesList

@@ -13,7 +13,7 @@ const AttendeesList = ({ tickets = [], totalCount = 0 }) => {
   return (
     <div className={styles.wrapper}>
       <p className={styles.count}>
-        Nº de asistentes: <span>{totalCount}</span>
+        Nº asistentes: <span>{totalCount}</span>
       </p>
 
       <div className={styles.avatars}>
