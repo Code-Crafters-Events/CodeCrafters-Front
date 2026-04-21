@@ -13,6 +13,7 @@ import { AuthContext } from "../../../context/auth/AuthContext";
 import EventTag from "../../atoms/EventTag/EventTag";
 import { paymentsApi } from "../../../services/paymentsApi";
 import WarningIcon from "../../../assets/warning.png";
+import ConfirmIcon from "../../../assets/check.gif";
 
 const formatDate = (dateStr, timeStr) => {
   if (!dateStr) return "";
@@ -41,7 +42,9 @@ const EventDetail = () => {
   const [isWorking, setIsWorking] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);
+  const [showConfirmRegisterModal, setShowConfirmRegisterModal] =
+    useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [registeredTicket, setRegisteredTicket] = useState(null);
 
@@ -51,6 +54,8 @@ const EventDetail = () => {
     ? tickets.filter(isValidPayment).length
     : 0;
   const isFull = event?.maxAttendees > 0 && currentCount >= event?.maxAttendees;
+
+  const isFreeEvent = event?.price === 0 || event?.price === null;
 
   const loadTickets = useCallback(async () => {
     if (!id) return;
@@ -147,6 +152,15 @@ const EventDetail = () => {
       return;
     }
 
+    if (isFreeEvent) {
+      setShowConfirmRegisterModal(true);
+    } else {
+      await proceedWithRegistration();
+    }
+  };
+
+  const proceedWithRegistration = async () => {
+    setShowConfirmRegisterModal(false);
     setIsWorking(true);
 
     try {
@@ -184,7 +198,7 @@ const EventDetail = () => {
   };
 
   const confirmUnregister = async () => {
-    setShowConfirmModal(false);
+    setShowConfirmCancelModal(false);
     setIsWorking(true);
     try {
       await ticketsApi.unregister(id);
@@ -297,7 +311,7 @@ const EventDetail = () => {
               <button
                 type="button"
                 className={styles.unregisterBtn}
-                onClick={() => setShowConfirmModal(true)}
+                onClick={() => setShowConfirmCancelModal(true)}
                 disabled={isWorking}
               >
                 {isWorking ? "Procesando..." : "Cancelar asistencia"}
@@ -323,14 +337,25 @@ const EventDetail = () => {
         </div>
       </div>
 
-      {showConfirmModal && (
+      {showConfirmRegisterModal && (
+        <MessageModal
+          image={ConfirmIcon}
+          message={`¿Segur@ que quieres asistir a "${event.title}"?`}
+          btnText="Confirmar Asistencia"
+          btnClass="neon"
+          onConfirm={proceedWithRegistration}
+          onClose={() => setShowConfirmRegisterModal(false)}
+        />
+      )}
+
+      {showConfirmCancelModal && (
         <MessageModal
           image={WarningIcon}
-          message="¿Segura que quieres cancelar tu asistencia a este evento?"
-          btnText="Confirmar"
+          message="¿Segur@ que quieres cancelar tu asistencia a este evento?"
+          btnText="Confirmar Cancelación"
           btnClass="neon"
           onConfirm={confirmUnregister}
-          onClose={() => setShowConfirmModal(false)}
+          onClose={() => setShowConfirmCancelModal(false)}
         />
       )}
 

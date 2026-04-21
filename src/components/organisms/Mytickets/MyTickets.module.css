@@ -1,14 +1,18 @@
 .panel {
-  padding: 1rem;
+  padding: 0.75rem;
   width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   min-height: 80vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   border-bottom: 1px solid var(--c4);
-  padding-bottom: 1rem;
+  padding-bottom: 0.75rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,7 +31,7 @@
 .subtitle {
   color: var(--c7);
   font-family: var(--orb);
-  font-size: 16px;
+  font-size: 20px;
   width: 100%;
   text-align: center;
 }
@@ -35,20 +39,25 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .ticketCard {
   background: var(--s2);
   border: 1px solid var(--c9);
-  padding: 1.2rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   transition: all 0.3s ease;
   height: 100%;
   min-height: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .ticketCard:hover {
@@ -59,9 +68,9 @@
 .statusBadge {
   background: var(--s2);
   color: var(--c3);
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 16px;
   text-transform: uppercase;
   border: 1px solid var(--c3);
   width: fit-content;
@@ -71,22 +80,23 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
   min-height: 0;
 }
 
 .ticketInfo h3 {
   margin: 0;
   color: white;
-  font-size: 20px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .code {
   color: var(--c7);
-  font-size: 18px;
+  font-size: 14px;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -96,14 +106,15 @@
 .qrPreview {
   position: relative;
   background: white;
-  padding: 0.8rem;
+  padding: 0.5rem;
   cursor: pointer;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px;
-  min-height: 150px;
+  height: 100px;
+  min-height: 100px;
+  box-sizing: border-box;
 }
 
 .qrPreview img {
@@ -125,40 +136,44 @@
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  font-size: 12px;
 }
 
 .cardActions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   margin-top: auto;
   align-items: center;
+  width: 100%;
 }
 
 .emptyState {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
   color: var(--c7);
-  font-size: 18px;
-  gap: 20px;
+  font-size: 14px;
+  gap: 15px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .pagination {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   justify-content: center;
-  padding: 30px 0;
-  margin-top: 50px;
+  padding: 20px 0;
+  margin-top: 30px;
+  flex-wrap: wrap;
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  border: 2px solid rgba(0, 255, 157, 0.3);
+  border: 1.5px solid rgba(0, 255, 157, 0.3);
   background-color: transparent;
   cursor: pointer;
   padding: 0;
@@ -171,6 +186,8 @@
 }
 
 .dotActive {
+  width: 8px;
+  height: 8px;
   background-color: var(--c3);
   border-color: var(--c3);
   box-shadow: 0 0 12px var(--c8);
@@ -183,46 +200,167 @@
 .pageInfo {
   color: var(--c7);
   font-family: var(--mono);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .loading {
   text-align: center;
   padding: 2rem;
   color: var(--c7);
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .error {
   color: red;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
   background: rgba(255, 107, 107, 0.1);
   border: 1px solid rgba(255, 107, 107, 0.3);
   border-radius: 8px;
-  margin: 20px 0;
+  margin: 15px 0;
   font-family: var(--mono);
-  font-size: 16px;
+  font-size: 13px;
 }
 
-@media (min-width: 1024px) {
-  .subtitle {
-    font-size: 20px;
+/* ===========================
+   TABLET (768px +)
+   =========================== */
+
+@media (min-width: 768px) {
+  .panel {
+    padding: 1.5rem;
+    max-width: 1200px;
   }
 
+  .header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .ticketCard {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .statusBadge {
+    font-size: 14px;
+    padding: 3px 8px;
+  }
+
+  .ticketInfo {
+    gap: 0.5rem;
+  }
+
+  .ticketInfo h3 {
+    font-size: 16px;
+  }
+
+  .code {
+    font-size: 13px;
+  }
+
+  .qrPreview {
+    height: 140px;
+    min-height: 140px;
+    padding: 0.8rem;
+  }
+
+  .qrPreview img {
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .qrPreview:hover .overlay {
+    opacity: 1;
+  }
+
+  .cardActions {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .pagination {
+    gap: 12px;
+    padding: 25px 0;
+    margin-top: 40px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-width: 2px;
+  }
+
+  .dotActive {
+    width: 12px;
+    height: 12px;
+  }
+
+  .emptyState {
+    font-size: 16px;
+    padding: 3rem 1rem;
+  }
+
+  .pageInfo {
+    font-size: 15px;
+  }
+
+  .loading {
+    font-size: 17px;
+  }
+}
+
+/* ===========================
+   DESKTOP (1024px +)
+   =========================== */
+
+@media (min-width: 1024px) {
   .panel {
     padding: 2rem;
     max-width: 1400px;
   }
 
+  .header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+  }
+
   .grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
     grid-auto-rows: 1fr;
+    gap: 1.5rem;
+    padding: 1rem 0;
   }
 
   .ticketCard {
-    padding: 1rem;
+    padding: 1.2rem;
+    gap: 1rem;
+  }
+
+  .statusBadge {
+    font-size: 14px;
   }
 
   .ticketInfo h3 {
@@ -231,12 +369,13 @@
   }
 
   .code {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .qrPreview {
     height: 120px;
     min-height: 120px;
+    padding: 0.8rem;
   }
 
   .qrPreview img {
@@ -244,52 +383,32 @@
     max-height: 110px;
   }
 
-  .qrPreview:hover .overlay {
-    opacity: 1;
-  }
-
-  .emptyState {
-    font-size: 20px;
-    align-items: center;
+  .cardActions {
+    flex-direction: column;
+    gap: 10px;
   }
 
   .pagination {
     gap: 12px;
+    padding: 30px 0;
+    margin-top: 50px;
   }
 
   .dot {
     width: 12px;
     height: 12px;
   }
-}
 
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-
-  .qrPreview {
-    height: 150px;
-    min-height: 150px;
-  }
-
-  .ticketInfo h3 {
+  .emptyState {
     font-size: 18px;
+    padding: 3rem 1rem;
   }
 
-  .pagination {
-    gap: 10px;
+  .pageInfo {
+    font-size: 16px;
   }
 
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-width: 1.5px;
-  }
-
-  .dotActive {
-    width: 10px;
-    height: 10px;
+  .loading {
+    font-size: 18px;
   }
 }

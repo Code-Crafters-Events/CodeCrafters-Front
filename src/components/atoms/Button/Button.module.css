@@ -9,6 +9,7 @@
   clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
   font-size: 18px;
   cursor: pointer;
+  width: 210px;
 }
 
 .neon:hover {
@@ -24,7 +25,8 @@
   box-shadow: none;
 }
 
-.cancel, .secondary {
+.cancel,
+.secondary {
   font-family: var(--orb);
   padding: 14px 32px;
   font-size: 20px;
@@ -41,7 +43,8 @@
   cursor: pointer;
 }
 
-.cancel:hover, .secondary:hover {
+.cancel:hover,
+.secondary:hover {
   border-color: #6a3aaa;
   color: #fff;
 }
@@ -156,7 +159,7 @@
   opacity: 0.85;
 }
 
-.cancelModal{
+.cancelModal {
   font-family: var(--orb);
   padding: 14px 32px;
   font-size: 20px;
@@ -178,7 +181,8 @@
     width: 240px;
   }
 
-  .cancel,.secondary {
+  .cancel,
+  .secondary {
     width: 240px;
   }
 
