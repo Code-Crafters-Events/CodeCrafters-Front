@@ -31,14 +31,12 @@ const UserPanel = () => {
   eventsApi
     .getByUser(user.id)
     .then((res) => {
-      // Verificamos dónde vienen los datos exactamente
       const data = res.data?.content ?? res.data;
-      // Si la data no es un array (ej. es null porque no hay eventos), ponemos []
       setEvents(Array.isArray(data) ? data : []);
     })
     .catch((err) => {
       console.error("Error cargando eventos:", err);
-      setEvents([]); // En caso de error, dejamos la lista vacía para evitar fallos
+      setEvents([]);
       setToast({
         message: "No se pudieron cargar tus eventos.",
         type: "error",
@@ -49,13 +47,11 @@ const UserPanel = () => {
 
  const handleSaved = (savedEvent, wasEditing) => {
   setEvents((prev) => {
-    // Si por algún error de la API 'prev' no es un array, lo convertimos en uno
     const safeEvents = Array.isArray(prev) ? prev : [];
 
     if (wasEditing) {
       return safeEvents.map((e) => (e.id === savedEvent.id ? savedEvent : e));
     } else {
-      // Ahora safeEvents siempre es iterable, evitando el error
       return [...safeEvents, savedEvent];
     }
   });
@@ -129,7 +125,7 @@ const UserPanel = () => {
       {deleteId && (
         <MessageModal
           image={WarningIcon}
-          message="¿Estás seguro de que quieres eliminar este evento? Esta acción no se puede deshacer."
+          message="¿Estás segur@ de que quieres eliminar este evento? Esta acción no se puede deshacer."
           btnText="Eliminar"
           btnClass="liquid"
           onConfirm={confirmDelete}
