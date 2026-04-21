@@ -201,15 +201,18 @@ const EventDetail = () => {
   if (isLoading) return <p className={styles.loading}>Cargando evento...</p>;
   if (!event) return <p className={styles.loading}>Evento no encontrado.</p>;
 
-  const locationStr = event.location
-    ? [
-        event.location.address || event.location.venue,
-        event.location.city,
-        event.location.country,
-      ]
-        .filter((val) => val && val.trim() !== "")
-        .join(", ")
-    : null;
+  const isOnline = event.category === "ONLINE";
+
+  const locationStr =
+    !isOnline && event.location
+      ? [
+          event.location.address || event.location.venue,
+          event.location.city,
+          event.location.country,
+        ]
+          .filter((val) => val && val.trim() !== "")
+          .join(", ")
+      : null;
 
   const confirmedAttendees = Array.isArray(tickets)
     ? tickets.filter(isValidPayment)
@@ -237,7 +240,6 @@ const EventDetail = () => {
                 <strong>Ubicación: </strong> {locationStr}
               </p>
             )}
-
             {user && (
               <AttendeesList
                 tickets={confirmedAttendees}

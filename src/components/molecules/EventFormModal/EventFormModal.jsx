@@ -8,9 +8,12 @@ import { eventsApi } from "../../../services/eventsApi";
 import { imagesApi } from "../../../services/imagesApi";
 import { locationsApi } from "../../../services/locationsApi";
 import { AuthContext } from "../../../context/auth/AuthContext";
+import defaultEventImage from "../../../assets/event_image_default.jpg";
 
 const CATEGORIES = ["MASTERCLASS", "HACKATHON", "TALLER", "NETWORKING"];
 const TYPES = ["ONLINE", "PRESENCIAL"];
+const DEFAULT_EVENT_IMAGE =
+  "https://res.cloudinary.com/dhwkjld3e/image/upload/v1776758262/i31tckkjpozsm4qrw8w9.jpg";
 
 const validate = (fields) => {
   const errors = {};
@@ -33,11 +36,14 @@ const validate = (fields) => {
   if (!fields.type) errors.type = "Selecciona una modalidad";
 
   if (!fields.location.trim()) {
-    errors.location = fields.type === "ONLINE" ? "El enlace es obligatorio" : "La dirección es obligatoria";
+    errors.location =
+      fields.type === "ONLINE"
+        ? "El enlace es obligatorio"
+        : "La dirección es obligatoria";
   } else if (fields.type === "ONLINE") {
-    const urlPattern = /^(https?:\/\/)[^\s$.?#].[^\s]*$/;
+    const urlPattern = /^(https?:\/\/)/;
     if (!urlPattern.test(fields.location.trim())) {
-      errors.location = "URL inválida (usa http:// o https://)";
+      errors.location = "La URL debe empezar por http:// o https://";
     }
   }
   if (fields.type === "PRESENCIAL") {
@@ -98,11 +104,14 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(
+    isEditing ? event.imageUrl : DEFAULT_EVENT_IMAGE,
+  );
   const [imageError, setImageError] = useState("");
 
   useEffect(() => {
     if (event) {
+      console.log("Datos de localización recibidos:", event.location);
       setFields({
         title: event.title ?? "",
         description: event.description ?? "",
@@ -112,16 +121,18 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
         time: event.time ?? "",
         maxAttendees:
           event.maxAttendees != null ? String(event.maxAttendees) : "",
-        location: event.location?.address ?? event.location?.venue ?? "",
-        city: event.location?.city ?? "",
-        country: event.location?.country ?? "",
+        location: event.location
+          ? event.location.address || event.location.venue
+          : "",
+        city: event.location?.city || "",
+        country: event.location?.country || "",
         price: event.price != null ? String(event.price) : "",
       });
-      setImagePreview(event.imageUrl ?? null);
+      setImagePreview(event.imageUrl ?? defaultEventImage);
     } else {
       setFields(INITIAL);
       setImageFile(null);
-      setImagePreview(null);
+      setImagePreview(defaultEventImage);
     }
     setTouched({});
     setServerErrors({});
@@ -131,7 +142,16 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFields((prev) => ({ ...prev, [name]: value }));
+    setFields((prev) => {
+      const newFields = { ...prev, [name]: value };
+      if (name === "type" && value === "ONLINE") {
+        newFields.city = "";
+        newFields.country = "";
+      }
+
+      return newFields;
+    });
+
     if (serverErrors[name])
       setServerErrors((prev) => ({ ...prev, [name]: undefined }));
   };
@@ -157,7 +177,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
   const handleImageRemove = () => {
     if (imagePreview?.startsWith("blob:")) URL.revokeObjectURL(imagePreview);
     setImageFile(null);
-    setImagePreview(null);
+    setImagePreview(DEFAULT_EVENT_IMAGE);
     setImageError("");
   };
 
@@ -177,22 +197,29 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
 
     try {
       let locationId = event?.location?.id ?? null;
-
       if (fields.location.trim()) {
+        const isOnline = fields.type === "ONLINE";
         try {
           const locRes = await locationsApi.create({
-            venue: fields.type === "ONLINE" ? "Online" : fields.location.trim(),
+            venue: isOnline ? fields.location.trim() : "Evento Presencial",
             address: fields.location.trim(),
-            city: fields.type === "PRESENCIAL" ? fields.city.trim() : "Online",
-            country:
-              fields.type === "PRESENCIAL" ? fields.country.trim() : "Online",
+            city: isOnline ? "Online" : fields.city.trim(),
+            country: isOnline ? "Online" : fields.country.trim(),
             zipCode: "00000",
-            latitude: 0,
-            longitude: 0,
+            latitude: 0.0,
+            longitude: 0.0,
           });
           locationId = locRes.data.id;
         } catch (locErr) {
-          console.warn("Error en locationsApi:", locErr);
+          console.error("Error detallado de la API:", locErr.response?.data);
+        }
+      }
+
+      let finalImageUrl = DEFAULT_EVENT_IMAGE;
+
+      if (isEditing && !imageFile) {
+        if (imagePreview && imagePreview.startsWith("http")) {
+          finalImageUrl = imagePreview;
         }
       }
 
@@ -206,7 +233,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
         maxAttendees: fields.maxAttendees ? Number(fields.maxAttendees) : 0,
         locationId: locationId,
         price: fields.price !== "" ? Number(fields.price) : 0,
-        imageUrl: event?.imageUrl ?? null,
+        imageUrl: finalImageUrl,
       };
 
       let savedEvent;
@@ -219,16 +246,12 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
       }
 
       if (imageFile && savedEvent?.id) {
-        try {
-          const imgRes = await imagesApi.uploadEventImage(
-            savedEvent.id,
-            user.id,
-            imageFile,
-          );
-          savedEvent = { ...savedEvent, imageUrl: imgRes.data.imageUrl };
-        } catch (imgError) {
-          console.error("Error subiendo imagen:", imgError);
-        }
+        const imgRes = await imagesApi.uploadEventImage(
+          savedEvent.id,
+          user.id,
+          imageFile,
+        );
+        savedEvent = { ...savedEvent, imageUrl: imgRes.data.imageUrl };
       }
 
       onSaved(savedEvent, isEditing);
@@ -289,6 +312,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("title")}
+              placeholder="Escribe el título del evento"
             />
             <FormField
               label={useDateText ? "Fecha (AAAA-MM-DD)" : "Fecha"}
@@ -316,6 +340,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("maxAttendees")}
+              placeholder="Ejemplo: 50"
             />
 
             <FormField
@@ -325,6 +350,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("location")}
+              placeholder="Escribe la dirección física o dirección URL"
             />
 
             {fields.type === "PRESENCIAL" && (
@@ -336,6 +362,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={getError("city")}
+                  placeholder="Escribe tu ciudad"
                 />
                 <FormField
                   label="País"
@@ -344,10 +371,10 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={getError("country")}
+                  placeholder="Escribe tu país"
                 />
               </>
             )}
-
             <div className={styles.descriptionWrapper}>
               <FormField
                 label="Descripción"
@@ -400,6 +427,7 @@ const EventFormModal = ({ isOpen, onClose, event = null, onSaved }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={getError("price")}
+              placeholder="0=Gratis"
             />
           </div>
 

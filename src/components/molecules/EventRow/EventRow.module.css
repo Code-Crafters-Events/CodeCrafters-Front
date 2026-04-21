@@ -24,6 +24,42 @@
   gap: 0.5rem;
 }
 
+.iconBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.iconBtn:hover {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.iconBtn:active {
+  transform: scale(0.95);
+}
+
+.editBtn {
+  color: var(--c5);
+}
+
+.editBtn:hover {
+  color: #ffe066;
+}
+
+.deleteBtn {
+  color: red;
+}
+
+.deleteBtn:hover {
+  color: #ff6666;
+}
+
 @media (min-width: 1024px) {
   .row {
     flex-direction: row;
