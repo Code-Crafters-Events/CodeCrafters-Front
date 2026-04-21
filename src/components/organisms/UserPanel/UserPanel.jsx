@@ -27,34 +27,49 @@ const UserPanel = () => {
   }, [user]);
 
   const loadEvents = () => {
-    setIsLoading(true);
-    eventsApi
-      .getByUser(user.id)
-      .then((res) => setEvents(res.data.content ?? res.data))
-      .catch(() =>
-        setToast({
-          message: "No se pudieron cargar tus eventos.",
-          type: "error",
-        }),
-      )
-      .finally(() => setIsLoading(false));
-  };
-
-  const handleSaved = (savedEvent, wasEditing) => {
-    if (wasEditing) {
-      setEvents((prev) =>
-        prev.map((e) => (e.id === savedEvent.id ? savedEvent : e)),
-      );
+  setIsLoading(true);
+  eventsApi
+    .getByUser(user.id)
+    .then((res) => {
+      // Verificamos dónde vienen los datos exactamente
+      const data = res.data?.content ?? res.data;
+      // Si la data no es un array (ej. es null porque no hay eventos), ponemos []
+      setEvents(Array.isArray(data) ? data : []);
+    })
+    .catch((err) => {
+      console.error("Error cargando eventos:", err);
+      setEvents([]); // En caso de error, dejamos la lista vacía para evitar fallos
       setToast({
-        message: "Evento actualizado correctamente.",
-        type: "success",
+        message: "No se pudieron cargar tus eventos.",
+        type: "error",
       });
+    })
+    .finally(() => setIsLoading(false));
+};
+
+ const handleSaved = (savedEvent, wasEditing) => {
+  setEvents((prev) => {
+    // Si por algún error de la API 'prev' no es un array, lo convertimos en uno
+    const safeEvents = Array.isArray(prev) ? prev : [];
+
+    if (wasEditing) {
+      return safeEvents.map((e) => (e.id === savedEvent.id ? savedEvent : e));
     } else {
-      setEvents((prev) => [...prev, savedEvent]);
-      setToast({ message: "Evento creado correctamente.", type: "success" });
+      // Ahora safeEvents siempre es iterable, evitando el error
+      return [...safeEvents, savedEvent];
     }
-    setModalEvent(undefined);
-  };
+  });
+
+  if (wasEditing) {
+    setToast({
+      message: "Evento actualizado correctamente.",
+      type: "success",
+    });
+  } else {
+    setToast({ message: "Evento creado correctamente.", type: "success" });
+  }
+  setModalEvent(undefined);
+};
 
   const confirmDelete = async () => {
     if (!deleteId) return;

@@ -43,6 +43,14 @@ const EventCard = ({ event }) => {
     return event.authorName?.toLowerCase() ?? "usuario";
   };
 
+  const isOnline =
+    String(event.type || "")
+      .toLowerCase()
+      .trim() === "online" ||
+    String(event.category || "")
+      .toLowerCase()
+      .trim() === "online";
+
   return (
     <article
       className={`${styles.card} ${isFull ? styles.fullEvent : ""}`}
@@ -79,7 +87,7 @@ const EventCard = ({ event }) => {
         )}
         <p className={styles.meta}>@{getDisplayUser()}</p>
 
-        {event.location && (
+        {!isOnline && event.location && (
           <p className={styles.meta}>
             {event.location.venue ?? event.location.address ?? ""}
           </p>
