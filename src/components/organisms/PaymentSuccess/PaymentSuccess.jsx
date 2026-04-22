@@ -23,12 +23,14 @@ const PaymentSuccess = () => {
 
   const loadUserTicket = useCallback(async (userId) => {
     let attempts = 0;
-    const maxAttempts = 30;
+    const maxAttempts = 20;
 
     const tryLoadTicket = async () => {
       try {
         const res = await ticketsApi.getByUser(userId, 0, 10);
-        const tickets = res.data.content ?? res.data;
+        const data = res?.data?.content ?? res?.data;
+        const tickets = Array.isArray(data) ? data : [];
+
         const myTicket = [...tickets]
           .sort((a, b) => b.id - a.id)
           .find((t) => t.paymentStatus === "COMPLETED");
@@ -55,23 +57,28 @@ const PaymentSuccess = () => {
 
         if (attempts < maxAttempts) {
           attempts++;
-          console.log(`Ticket no encontrado, reintentando...`);
+          console.log(
+            `Ticket aún no procesado (intento ${attempts}), reintentando...`,
+          );
           setTimeout(tryLoadTicket, 500);
         } else {
-          console.warn("Ticket no encontrado después de 15 segundos");
-          setStatus("success");
+          setStatus("error");
           setMessage(
-            "Pago confirmado. Si no ves tu entrada, revisa 'Mis Tickets'.",
+            "El pago se realizó, pero tu entrada está tardando en generarse. Búscala en 'Mis Entradas' más tarde.",
           );
         }
       } catch (error) {
         console.error("Error recuperando ticket:", error);
-        if (attempts < maxAttempts) {
+        if (attempts < 5) {
           attempts++;
-          setTimeout(tryLoadTicket, 1000);
+          setTimeout(tryLoadTicket, 2000);
+        } else {
+          setStatus("error");
+          setMessage("Error de conexión al obtener tu ticket.");
         }
       }
     };
+
     tryLoadTicket();
   }, []);
 

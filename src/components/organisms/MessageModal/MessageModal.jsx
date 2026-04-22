@@ -9,25 +9,47 @@ const MessageModal = ({
   onConfirm,
   onClose,
   secondaryBtnText = "Cancelar",
+  isLoading = false,
 }) => {
   return (
     <div className={styles.overlay}>
       <div className={styles.modalContainer}>
         <div className={styles.content}>
-          {image && (
-            <img src={image} alt="Modal Icon" className={styles.icon} />
+          {isLoading ? (
+            <div className={styles.spinnerContainer}>
+              <div className={styles.spinner}></div>
+            </div>
+          ) : (
+            image && (
+              <img src={image} alt="Modal Icon" className={styles.icon} />
+            )
           )}
-          <p className={styles.message}>{message}</p>
+
+          <p className={styles.message}>
+            {isLoading
+              ? "Procesando eliminación y notificando asistentes..."
+              : message}
+          </p>
         </div>
 
         <div className={styles.actions}>
-          <Button text={secondaryBtnText} BtnClass="ghost" onClick={onClose} />
+          {!isLoading && (
+            <Button
+              text={secondaryBtnText}
+              BtnClass="ghost"
+              onClick={onClose}
+            />
+          )}
 
-          <Button text={btnText} BtnClass="neon" onClick={onConfirm} />
+          <Button
+            text={isLoading ? "Eliminando..." : btnText}
+            BtnClass={btnClass || "neon"}
+            onClick={onConfirm}
+            disabled={isLoading}
+          />
         </div>
       </div>
     </div>
   );
 };
-
 export default MessageModal;

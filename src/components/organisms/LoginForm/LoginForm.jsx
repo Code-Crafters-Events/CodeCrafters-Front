@@ -134,7 +134,7 @@ const LoginForm = () => {
         />
 
         <p className={styles.registerLink}>
-          ¿No tienes cuenta? Regístrate{" "}
+          ¿No tienes cuenta? Regístrate
           <Link to="/home/register" className={styles.link}>
             aquí
           </Link>

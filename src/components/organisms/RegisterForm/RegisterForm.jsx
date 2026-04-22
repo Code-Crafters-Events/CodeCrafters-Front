@@ -247,7 +247,7 @@ const RegisterForm = () => {
                 onChange={() => setAccepted(!accepted)}
                 className={styles.checkbox}
               />
-              Acepto las{" "}
+              Acepto las
               <Link to="/home/privacy" className={styles.privacyLink}>
                 políticas de privacidad
               </Link>

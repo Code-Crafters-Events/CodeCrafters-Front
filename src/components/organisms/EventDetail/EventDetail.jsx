@@ -49,6 +49,9 @@ const EventDetail = () => {
   const [registeredTicket, setRegisteredTicket] = useState(null);
 
   const isOwner = user?.id && event?.authorId === user.id;
+  const isPast = event
+    ? new Date(`${event.date}T${event.time || "00:00:00"}`) < new Date()
+    : false;
 
   const currentCount = Array.isArray(tickets)
     ? tickets.filter(isValidPayment).length
@@ -148,7 +151,7 @@ const EventDetail = () => {
       return;
     }
     if (isFull) {
-      setToast({ message: "El evento ya está completo.", type: "error" });
+      setToast({ message: "El evento ya está lleno.", type: "error" });
       return;
     }
 
@@ -242,7 +245,8 @@ const EventDetail = () => {
             <p className={styles.meta}>{formatDate(event.date, event.time)}</p>
             <p className={styles.meta}>
               @{event.authorAlias ?? event.authorName ?? "usuario"}
-              {event.maxAttendees &&
+              {!isPast &&
+                event.maxAttendees &&
                 ` · ${currentCount}/${event.maxAttendees} plazas ocupadas`}
             </p>
 
@@ -254,7 +258,7 @@ const EventDetail = () => {
                 <strong>Ubicación: </strong> {locationStr}
               </p>
             )}
-            {user && (
+            {user && !isPast && (
               <AttendeesList
                 tickets={confirmedAttendees}
                 totalCount={confirmedAttendees.length}
@@ -274,13 +278,19 @@ const EventDetail = () => {
         </div>
 
         <div className={styles.actions}>
-          {!user && (
+          {!user && !isPast && (
             <p className={styles.loginHint}>
               <a href="/home/login" className={styles.loginLink}>
                 Inicia sesión
-              </a>{" "}
+              </a>
               para apuntarte.
             </p>
+          )}
+
+          {isPast && (
+            <span className={styles.pastBadge}>
+              Este evento ya ha finalizado
+            </span>
           )}
 
           {user && isOwner && (
@@ -289,7 +299,7 @@ const EventDetail = () => {
             </span>
           )}
 
-          {user && !isOwner && !isRegistered && (
+          {user && !isOwner && !isRegistered && !isPast && (
             <Button
               text={
                 isWorking
@@ -308,14 +318,16 @@ const EventDetail = () => {
           {user && !isOwner && isRegistered && (
             <div className={styles.registeredRow}>
               <span className={styles.registeredBadge}>✓ Estás apuntado</span>
-              <button
-                type="button"
-                className={styles.unregisterBtn}
-                onClick={() => setShowConfirmCancelModal(true)}
-                disabled={isWorking}
-              >
-                {isWorking ? "Procesando..." : "Cancelar asistencia"}
-              </button>
+              {!isPast && (
+                <button
+                  type="button"
+                  className={styles.unregisterBtn}
+                  onClick={() => setShowConfirmCancelModal(true)}
+                  disabled={isWorking}
+                >
+                  {isWorking ? "Procesando..." : "Cancelar asistencia"}
+                </button>
+              )}
             </div>
           )}
 

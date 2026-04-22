@@ -5,7 +5,6 @@ import Community from "../pages/Community/Community";
 import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import Event from "../pages/Event/Event";
-import RegEvent from "../pages/RegEvent/RegEvent";
 import Panel from "../pages/Panel/Panel";
 import Loading from "../components/organisms/LoadingScreen/LoadingScreen";
 import Tickets from "../pages/PanelTickets/PanelTickets";
@@ -41,7 +40,6 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { path: "regEvent", Component: RegEvent },
       { path: "panel", Component: Panel },
       { path: "my-tickets", Component: Tickets },
       { path: "checkout/:id", Component: Checkout },

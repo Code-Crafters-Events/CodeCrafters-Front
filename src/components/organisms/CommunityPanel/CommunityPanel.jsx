@@ -14,16 +14,26 @@ const CommunityPanel = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeFilters, setActiveFilters] = useState({});
+  const [activeFilters, setActiveFilters] = useState({
+    showPast: false,
+  });
   const [filterOpen, setFilterOpen] = useState(false);
-  const isFiltered = Object.keys(activeFilters).length > 0;
+  const isFiltered = Object.keys(activeFilters).some(
+    (key) => activeFilters[key] !== false && activeFilters[key] !== undefined,
+  );
 
   useEffect(() => {
     setIsLoading(true);
     setError(null);
+
+    const searchParams = {
+      ...activeFilters,
+      showPast: activeFilters.showPast ?? false,
+    };
+
     const call = isFiltered
-      ? eventsApi.search(activeFilters, page, PAGE_SIZE)
-      : eventsApi.getAll(page, PAGE_SIZE);
+      ? eventsApi.search(searchParams, page, PAGE_SIZE)
+      : eventsApi.search(searchParams, page, PAGE_SIZE);
 
     call
       .then((res) => {
@@ -38,12 +48,18 @@ const CommunityPanel = () => {
   }, [page, activeFilters, isFiltered]);
 
   const handleSearch = (filters) => {
-    setActiveFilters(filters);
+    const filtersWithDefault = {
+      ...filters,
+      showPast: filters.showPast ?? false,
+    };
+    setActiveFilters(filtersWithDefault);
     setPage(0);
   };
 
   const handleClearFilters = () => {
-    setActiveFilters({});
+    setActiveFilters({
+      showPast: false,
+    });
     setPage(0);
   };
 
@@ -67,7 +83,11 @@ const CommunityPanel = () => {
           </button>
         )}
       </div>
-      <h1 className={styles.title}>Eventos en curso</h1>
+      <h1 className={styles.title}>
+        {activeFilters.showPast
+          ? "Archivo Histórico de Eventos"
+          : "Próximos Eventos en Comunidad"}
+      </h1>
       {isLoading && <p className={styles.message}>Cargando eventos...</p>}
 
       {error && (

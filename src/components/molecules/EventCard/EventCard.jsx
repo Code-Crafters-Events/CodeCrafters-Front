@@ -18,6 +18,10 @@ const formatDate = (dateStr, timeStr) => {
 const EventCard = ({ event }) => {
   const navigate = useNavigate();
 
+  const isPast = event.date
+    ? new Date(`${event.date}T${event.time || "00:00:00"}`) < new Date()
+    : false;
+
   const currentCount = event.attendeesCount ?? 0;
   const isFull = event.maxAttendees > 0 && currentCount >= event.maxAttendees;
 
@@ -93,7 +97,7 @@ const EventCard = ({ event }) => {
           </p>
         )}
 
-        {event.maxAttendees && (
+        {!isPast && event.maxAttendees && (
           <p className={styles.meta}>
             Plazas: {currentCount} / {event.maxAttendees}
           </p>

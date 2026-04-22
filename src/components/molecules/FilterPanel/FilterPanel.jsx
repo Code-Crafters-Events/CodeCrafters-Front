@@ -16,6 +16,7 @@ const INITIAL_FILTERS = {
   authorAlias: "",
   dateFrom: "",
   dateTo: "",
+  showPast: false,
 };
 
 const FilterPanel = ({ isOpen, onClose, onSearch }) => {
@@ -42,6 +43,7 @@ const FilterPanel = ({ isOpen, onClose, onSearch }) => {
       dateTo: filters.dateTo || undefined,
       priceMin: filters.gratis ? "0" : filters.priceMin || undefined,
       priceMax: filters.gratis ? "0" : filters.priceMax || undefined,
+      showPast: filters.showPast || undefined,
     };
     onSearch(params);
     onClose();
@@ -186,6 +188,19 @@ const FilterPanel = ({ isOpen, onClose, onSearch }) => {
           </div>
         </div>
 
+        <div className={styles.group}>
+          <p className={styles.groupLabel}>Opciones de visualización</p>
+          <label className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              name="showPast"
+              checked={filters.showPast}
+              onChange={handleChange}
+              className={styles.checkbox}
+            />
+            Mostrar eventos pasados
+          </label>
+        </div>
         <div className={styles.actions}>
           <Button
             text="Buscar"

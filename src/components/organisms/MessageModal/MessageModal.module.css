@@ -26,6 +26,7 @@
   gap: 20px;
   box-sizing: border-box;
   padding: 20px;
+  transition: all 0.3s ease;
 }
 
 .content {
@@ -48,12 +49,35 @@
   margin: 0;
   text-align: center;
   font-size: var(--mono);
+  transition: color 0.3s ease;
 }
 
 .actions {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+}
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--c9);
+  border-radius: 50%;
+  border-top-color: var(--c3);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (min-width: 1024px) {

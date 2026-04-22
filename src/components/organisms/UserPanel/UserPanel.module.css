@@ -8,7 +8,7 @@
 
 .title {
   font-family: var(--orb);
-  font-size: 1rem;
+  font-size: 20px;
   color: white;
   text-transform: uppercase;
   text-align: center;
@@ -48,9 +48,58 @@
   margin-top: auto;
 }
 
+.tabsContainer {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--c9);
+  margin-bottom: 20px;
+}
+
+.content {
+  min-height: 300px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.pageBtn {
+  background: var(--c9);
+  border: 1px solid var(--c8);
+  color: white;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--orb);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: var(--c9);
+  border-color: var(--c);
+  box-shadow: 0 0 10px var(--c9);
+}
+
+.pageBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: var(--c7);
+}
+
+.pageInfo {
+  font-size: 16px;
+  color: var(--c7);
+}
+
 @media (min-width: 1024px) {
   .title {
-    font-size: 1.4rem;
+    font-size: 30px;
   }
 
   .panel {

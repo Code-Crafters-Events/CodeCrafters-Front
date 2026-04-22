@@ -26,6 +26,17 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (res) => res,
   (err) => {
+    if (!err.response) {
+      window.dispatchEvent(new CustomEvent("api-connection-error", { 
+        detail: "No se pudo conectar con el servidor. ¿Está el backend encendido?" 
+      }));
+      return Promise.reject(err);
+    }
+    if (err.response.status >= 500) {
+      window.dispatchEvent(new CustomEvent("api-server-error", { 
+        detail: err.response.data?.message || "Error interno en el servidor (Posible fallo en Stripe o base de datos)." 
+      }));
+    }
     const isAuthRoute = err.config?.url?.includes("/api/auth/");
     if (err.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem("user");
@@ -35,5 +46,4 @@ api.interceptors.response.use(
     return Promise.reject(err);
   },
 );
-
 export default api;
