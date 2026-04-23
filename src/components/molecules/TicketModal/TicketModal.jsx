@@ -98,11 +98,12 @@ const TicketModal = ({ ticket, onClose }) => {
           {ticket.date && <p className={styles.dateLabel}>{ticket.date}</p>}
         </div>
 
-        <div className={styles.actions}>
-          <Button text="Descargar PDF" BtnClass="neon" onClick={downloadPDF} />
-        </div>
+        
 
         <div className={styles.navigationActions}>
+          <div className={styles.actions}>
+          <Button text="Descargar PDF" BtnClass="neon" onClick={downloadPDF} />
+        </div>
           <Button
             text="Ver Info del Evento"
             BtnClass="secondary"
