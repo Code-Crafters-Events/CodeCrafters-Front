@@ -81,12 +81,15 @@
   gap: 0.5rem;
 }
 
-.priceField .input,
-.dateField .input {
+.priceField .input{
   width: 100px;
   flex-shrink: 0;
 }
 
+.dateField .input{
+  width: 150px;
+  flex-shrink: 0;
+}
 .priceLabel {
   font-family: var(--mono);
   font-size: 18px;

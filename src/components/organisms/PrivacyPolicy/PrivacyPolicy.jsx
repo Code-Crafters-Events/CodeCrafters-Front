@@ -55,7 +55,7 @@ const PrivacyPolicy = () => {
 
         <footer className={styles.footer}>
           <p className={styles.contactText}>¿Dudas sobre el protocolo?</p>
-          <a href="mailto:Jennyx1984@gmail.com" className={styles.contactBtn}>
+          <a href="mailto:codecraftersevents@gmail.com" className={styles.contactBtn}>
             Contactar Soporte
           </a>
         </footer>

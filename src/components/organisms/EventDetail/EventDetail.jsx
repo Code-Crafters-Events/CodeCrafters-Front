@@ -283,7 +283,7 @@ const EventDetail = () => {
               <a href="/home/login" className={styles.loginLink}>
                 Inicia sesión
               </a>
-              para apuntarte.
+              &nbsp;para apuntarte.
             </p>
           )}
 

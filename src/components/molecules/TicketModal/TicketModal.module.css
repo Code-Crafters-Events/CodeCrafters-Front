@@ -21,7 +21,7 @@
   width: 100%;
   max-width: 400px;
   text-align: center;
-  box-shadow: 0 0 30px rgba(0, 255, 157, 0.15);
+  box-shadow: 0 0 30px var(--c8);
   animation: slideUp 0.4s ease-out;
 }
 
@@ -93,7 +93,7 @@
 :global(.secondary) {
   background: linear-gradient(
     135deg,
-    rgba(0, 255, 157, 0.1),
+    var(--c8),
     rgba(255, 184, 0, 0.1)
   );
   color: var(--c3);
@@ -108,7 +108,7 @@
 :global(.secondary:hover:not(:disabled)) {
   background: linear-gradient(
     135deg,
-    rgba(0, 255, 157, 0.2),
+    var(--c8),
     rgba(255, 184, 0, 0.2)
   );
   box-shadow: 0 0 15px var(--c8);
@@ -121,27 +121,34 @@
 
 @media (min-width: 1024px) {
   .modal {
-    padding: 2.5rem;
-    max-width: 500px;
+    padding: 1.5rem 2rem;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
     border-width: 2px;
   }
 
   .title {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   .subtitle {
-    font-size: 30px;
-    margin-bottom: 2rem;
+    font-size: 20px;
+    margin-bottom: 1rem;
   }
 
   .subtitle strong {
-    font-size: 25px;
+   font-size: 18px;
+  }
+
+  .qrContainer {
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
 
   .qrImage {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
   }
 
   .actions {
@@ -155,7 +162,8 @@
   }
 
   .navigationActions {
-    gap: 8px;
+    margin-top: 15px;
+    padding-top: 10px;
   }
 
   .navigationActions button {
@@ -173,4 +181,18 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+.modal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: var(--c3);
+  border-radius: 10px;
 }
