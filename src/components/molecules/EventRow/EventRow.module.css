@@ -4,6 +4,11 @@
   gap: 0.6rem;
   padding: 1rem 0;
   border-bottom: 1px solid var(--c9);
+  transition: background-color 0.2s ease;
+}
+
+.rowPast {
+  opacity: 0.6;
 }
 
 .info {
@@ -14,14 +19,17 @@
 
 .title {
   font-family: var(--mono);
-  font-size: 20px;
+  font-size: 18px;
   color: white;
   line-height: 1.4;
+  margin: 0;
 }
 
 .actions {
   display: flex;
   gap: 0.5rem;
+  min-height: 40px;
+  align-items: center;
 }
 
 .iconBtn {
@@ -32,16 +40,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
 .iconBtn:hover {
   transform: scale(1.1);
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.iconBtn:active {
-  transform: scale(0.95);
 }
 
 .editBtn {
@@ -62,20 +67,30 @@
 
 @media (min-width: 1024px) {
   .row {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 100px;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    gap: 2rem;
+    padding: 0.75rem 0;
   }
 
   .info {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 150px 1fr;
     align-items: center;
     gap: 1.5rem;
-    flex: 1;
+    flex-direction: row;
   }
 
   .title {
     font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .actions {
+    justify-content: flex-end;
   }
 }

@@ -6,8 +6,12 @@ const EventRow = ({ event, onEdit, onDelete, isPast }) => {
     <div className={`${styles.row} ${isPast ? styles.rowPast : ""}`}>
       <div className={styles.info}>
         <CategoryTag category={event.type} />
-        <p className={styles.title}>{event.title}</p>
+
+        <p className={styles.title} title={event.title}>
+          {event.title}
+        </p>
       </div>
+
       <div className={styles.actions}>
         {!isPast && (
           <>
