@@ -10,11 +10,20 @@ export default function EventsSection() {
   useEffect(() => {
     eventsApi
       .getAll(0, 3)
-      .then((res) => setEvents(res.data.content ?? res.data))
+      .then((res) => {
+        const data = res?.data;
+        const normalizedEvents = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.content)
+            ? data.content
+            : [];
+
+        setEvents(normalizedEvents);
+      })
       .catch(() => setEvents([]));
   }, []);
 
-  if (events.length === 0) return null;
+  if (!Array.isArray(events) || events.length === 0) return null;
 
   return (
     <section aria-label="Próximos eventos">
