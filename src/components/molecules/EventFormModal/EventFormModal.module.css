@@ -37,8 +37,8 @@
 .globalError {
   font-family: var(--mono);
   font-size: 0.8rem;
-  color: #ff4d4d;
-  border: 1px solid #ff4d4d;
+  color: var(--error);
+  border: 1px solid var(--error);
   padding: 0.5rem 0.75rem;
 }
 
@@ -63,7 +63,7 @@
 .fieldError {
   font-family: var(--mono);
   font-size: 0.75rem;
-  color: #ff4d4d;
+  color: var(--error);
 }
 
 .grid {
