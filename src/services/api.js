@@ -38,7 +38,7 @@ api.interceptors.response.use(
       }));
     }
     const isAuthRoute = err.config?.url?.includes("/api/auth/");
-    if (err.response?.status === 401 && !isAuthRoute) {
+    if ((status === 401 || status === 403) && !isAuthRoute) {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       window.location.href = "/home/login";
