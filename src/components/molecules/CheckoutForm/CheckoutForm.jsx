@@ -51,7 +51,7 @@ const CheckoutForm = () => {
   };
 
   const handleCancel = () => {
-    navigate(-1); 
+    navigate(-1);
   };
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -59,6 +59,7 @@ const CheckoutForm = () => {
         <PaymentElement id="payment-element" />
       </div>
 
+      {message && <div className={styles.errorMessage}>{message}</div>}
       <div className={styles.actions}>
         <button
           type="submit"
@@ -73,7 +74,7 @@ const CheckoutForm = () => {
           className={styles.cancel}
           disabled={isLoading}
         >
-        Cancelar
+          Cancelar
         </button>
       </div>
     </form>

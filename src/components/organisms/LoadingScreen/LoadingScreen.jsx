@@ -44,7 +44,7 @@ export default function LoadingScreen() {
   };
 
   return (
-    <div className={styles.screen}>
+    <main className={styles.screen} role="main">
       <div className={styles.scanlines} />
       <div className={styles.hexGrid} />
       <div className={styles.glowRing} />
@@ -63,6 +63,6 @@ export default function LoadingScreen() {
           ENTRAR AL SISTEMA →
         </button>
       </div>
-    </div>
+    </main>
   );
 }
