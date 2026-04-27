@@ -162,7 +162,7 @@ const UserProfile = () => {
           <EditableField
             label="Alias"
             value={user.alias}
-            placeholder="Sin especificar"
+            placeholder="Escribe un alias"
             onSave={(val) => saveField("alias", val)}
           />
           <EditableField

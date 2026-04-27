@@ -14,6 +14,11 @@ const validate = (fields) => {
   if (!fields.name.trim()) errors.name = "El nombre es obligatorio";
   if (!fields.firstName.trim())
     errors.firstName = "El primer apellido es obligatorio";
+  if (!fields.alias.trim()) {
+    errors.alias = "El alias es obligatorio";
+  } else if (fields.alias.length < 3 || fields.alias.length > 20) {
+    errors.alias = "El alias debe tener entre 3 y 20 caracteres";
+  }
   if (!fields.email.trim()) {
     errors.email = "El email es obligatorio";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
@@ -91,7 +96,13 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setTouched({ name: true, firstName: true, email: true, password: true });
+    setTouched({
+      name: true,
+      firstName: true,
+      email: true,
+      password: true,
+      alias: true,
+    });
 
     const frontErrors = validate(fields);
     if (Object.keys(frontErrors).length > 0) return;
@@ -149,9 +160,12 @@ const RegisterForm = () => {
     } catch (error) {
       const status = error.response?.status;
       const data = error.response?.data;
+      const message = data?.message || "";
 
       if (status === 400 && data && typeof data === "object") {
         setServerErrors(data);
+      } else if (status === 409 && message.toLowerCase().includes("alias")) {
+        setServerErrors({ alias: "Este alias ya está en uso." });
       } else if (status === 409) {
         setServerErrors({ email: "Este email ya está registrado." });
       } else {
@@ -180,6 +194,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={getError("name")}
+          placeholder="Escribe tu nombre"
           tabIndex={1}
         />
         <FormField
@@ -189,6 +204,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={getError("firstName")}
+          placeholder="Escribe tu primer apellido"
           tabIndex={2}
         />
         <FormField
@@ -198,15 +214,17 @@ const RegisterForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={getError("secondName")}
+          placeholder="Escribe tu segundo apellido"
           tabIndex={3}
         />
         <FormField
-          label="Alias"
+          label="Alias *"
           name="alias"
           value={fields.alias}
           onChange={handleChange}
           onBlur={handleBlur}
           error={getError("alias")}
+          placeholder="Entre 3 y 20 carácteres"
           tabIndex={4}
         />
         <FormField
@@ -217,6 +235,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={getError("email")}
+          placeholder="Escribe tu email"
           tabIndex={5}
         />
         <FormField
@@ -227,6 +246,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           error={getError("password")}
+          placeholder="Escribe una contraseña"
           tabIndex={6}
         />
 

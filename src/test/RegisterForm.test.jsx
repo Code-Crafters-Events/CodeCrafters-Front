@@ -1,14 +1,22 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { AuthContext } from "../context/auth/AuthContext";
 import RegisterForm from "../components/organisms/RegisterForm/RegisterForm";
 
-const { mockAuthRegister, mockAuthLogin, mockUploadProfileImage } = vi.hoisted(() => ({
-  mockAuthRegister: vi.fn(),
-  mockAuthLogin: vi.fn(),
-  mockUploadProfileImage: vi.fn(),
-}));
+const { mockAuthRegister, mockAuthLogin, mockUploadProfileImage } = vi.hoisted(
+  () => ({
+    mockAuthRegister: vi.fn(),
+    mockAuthLogin: vi.fn(),
+    mockUploadProfileImage: vi.fn(),
+  }),
+);
 
 const mockNavigate = vi.fn();
 const mockLoginFn = vi.fn();
@@ -45,7 +53,9 @@ vi.mock("../components/atoms/AvatarUpload/AvatarUpload", () => ({
           Quitar avatar
         </button>
         {props.error && <p data-testid="avatar-error">{props.error}</p>}
-        {props.preview && <img data-testid="avatar-preview" src={props.preview} alt="preview" />}
+        {props.preview && (
+          <img data-testid="avatar-preview" src={props.preview} alt="preview" />
+        )}
       </div>
     );
   },
@@ -66,16 +76,22 @@ const wrap = () =>
   render(
     <MemoryRouter>
       <AuthContext.Provider
-        value={{ user: null, login: mockLoginFn, logout: vi.fn(), updateUser: vi.fn() }}
+        value={{
+          user: null,
+          login: mockLoginFn,
+          logout: vi.fn(),
+          updateUser: vi.fn(),
+        }}
       >
         <RegisterForm />
       </AuthContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 const fillRequiredFields = ({
   name = "Jennifer",
   firstName = "Cros",
+  alias = "jenny",
   email = "jen@test.com",
   password = "password123",
 } = {}) => {
@@ -84,6 +100,10 @@ const fillRequiredFields = ({
   });
   fireEvent.change(document.querySelector("input[name='firstName']"), {
     target: { value: firstName, name: "firstName" },
+  });
+  fireEvent.change(document.querySelector("input[name='alias']"), {
+    // ← añadir
+    target: { value: alias, name: "alias" },
   });
   fireEvent.change(document.querySelector("input[name='email']"), {
     target: { value: email, name: "email" },
@@ -113,7 +133,7 @@ describe("RegisterForm — Cobertura completa", () => {
     expect(screen.getByText("Nombre *")).toBeInTheDocument();
     expect(screen.getByText("Primer apellido *")).toBeInTheDocument();
     expect(screen.getByText("Segundo apellido")).toBeInTheDocument();
-    expect(screen.getByText("Alias")).toBeInTheDocument();
+    expect(screen.getByText("Alias *")).toBeInTheDocument();
     expect(screen.getByText("Email *")).toBeInTheDocument();
     expect(screen.getByText("Contraseña *")).toBeInTheDocument();
   });
@@ -133,7 +153,7 @@ describe("RegisterForm — Cobertura completa", () => {
     wrap();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("El nombre es obligatorio")).toBeInTheDocument()
+      expect(screen.getByText("El nombre es obligatorio")).toBeInTheDocument(),
     );
   });
 
@@ -141,7 +161,9 @@ describe("RegisterForm — Cobertura completa", () => {
     wrap();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("El primer apellido es obligatorio")).toBeInTheDocument()
+      expect(
+        screen.getByText("El primer apellido es obligatorio"),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -149,7 +171,7 @@ describe("RegisterForm — Cobertura completa", () => {
     wrap();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("El email es obligatorio")).toBeInTheDocument()
+      expect(screen.getByText("El email es obligatorio")).toBeInTheDocument(),
     );
   });
 
@@ -157,7 +179,9 @@ describe("RegisterForm — Cobertura completa", () => {
     wrap();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("La contraseña es obligatoria")).toBeInTheDocument()
+      expect(
+        screen.getByText("La contraseña es obligatoria"),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -165,7 +189,7 @@ describe("RegisterForm — Cobertura completa", () => {
     wrap();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("El nombre es obligatorio")).toBeInTheDocument()
+      expect(screen.getByText("El nombre es obligatorio")).toBeInTheDocument(),
     );
     expect(mockAuthRegister).not.toHaveBeenCalled();
   });
@@ -173,10 +197,12 @@ describe("RegisterForm — Cobertura completa", () => {
   it("muestra error de email inválido en onBlur", async () => {
     wrap();
     const emailInput = document.querySelector("input[name='email']");
-    fireEvent.change(emailInput, { target: { value: "noemail", name: "email" } });
+    fireEvent.change(emailInput, {
+      target: { value: "noemail", name: "email" },
+    });
     fireEvent.blur(emailInput);
     await waitFor(() =>
-      expect(screen.getByText("Formato de email inválido")).toBeInTheDocument()
+      expect(screen.getByText("Formato de email inválido")).toBeInTheDocument(),
     );
   });
 
@@ -186,7 +212,7 @@ describe("RegisterForm — Cobertura completa", () => {
     fireEvent.change(passInput, { target: { value: "abc", name: "password" } });
     fireEvent.blur(passInput);
     await waitFor(() =>
-      expect(screen.getByText("Mínimo 6 caracteres")).toBeInTheDocument()
+      expect(screen.getByText("Mínimo 6 caracteres")).toBeInTheDocument(),
     );
   });
 
@@ -197,13 +223,17 @@ describe("RegisterForm — Cobertura completa", () => {
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("Este email ya está registrado.")).toBeInTheDocument()
+      expect(
+        screen.getByText("Este email ya está registrado."),
+      ).toBeInTheDocument(),
     );
     fireEvent.change(document.querySelector("input[name='email']"), {
       target: { value: "otro@test.com", name: "email" },
     });
     await waitFor(() =>
-      expect(screen.queryByText("Este email ya está registrado.")).not.toBeInTheDocument()
+      expect(
+        screen.queryByText("Este email ya está registrado."),
+      ).not.toBeInTheDocument(),
     );
   });
 
@@ -213,8 +243,8 @@ describe("RegisterForm — Cobertura completa", () => {
     submitForm();
     await waitFor(() =>
       expect(
-        screen.getByText("Debes aceptar las políticas de privacidad")
-      ).toBeInTheDocument()
+        screen.getByText("Debes aceptar las políticas de privacidad"),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -233,10 +263,10 @@ describe("RegisterForm — Cobertura completa", () => {
           email: "jen@test.com",
           password: "password123",
           secondName: null,
-          alias: null,
+          alias: "jenny",
           profileImage: null,
-        })
-      )
+        }),
+      ),
     );
   });
 
@@ -251,7 +281,7 @@ describe("RegisterForm — Cobertura completa", () => {
       expect(mockAuthLogin).toHaveBeenCalledWith({
         email: "jen@test.com",
         password: "password123",
-      })
+      }),
     );
   });
 
@@ -263,7 +293,9 @@ describe("RegisterForm — Cobertura completa", () => {
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(mockLoginFn).toHaveBeenCalledWith(expect.objectContaining({ id: 1 }))
+      expect(mockLoginFn).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 1 }),
+      ),
     );
   });
 
@@ -275,7 +307,9 @@ describe("RegisterForm — Cobertura completa", () => {
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("¡Bienvenid@ a Code Crafters!")).toBeInTheDocument()
+      expect(
+        screen.getByText("¡Bienvenid@ a Code Crafters!"),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -306,8 +340,8 @@ describe("RegisterForm — Cobertura completa", () => {
     submitForm();
     await waitFor(() =>
       expect(mockAuthRegister).toHaveBeenCalledWith(
-        expect.objectContaining({ secondName: "García", alias: "jenny" })
-      )
+        expect.objectContaining({ secondName: "García", alias: "jenny" }),
+      ),
     );
   });
 
@@ -324,7 +358,7 @@ describe("RegisterForm — Cobertura completa", () => {
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(mockUploadProfileImage).toHaveBeenCalledWith(42, fakeFile)
+      expect(mockUploadProfileImage).toHaveBeenCalledWith(42, fakeFile),
     );
   });
 
@@ -344,8 +378,8 @@ describe("RegisterForm — Cobertura completa", () => {
       expect(mockLoginFn).toHaveBeenCalledWith(
         expect.objectContaining({
           profileImage: "http://localhost:8080/img/avatar.png",
-        })
-      )
+        }),
+      ),
     );
   });
 
@@ -365,8 +399,8 @@ describe("RegisterForm — Cobertura completa", () => {
       expect(mockLoginFn).toHaveBeenCalledWith(
         expect.objectContaining({
           profileImage: "http://localhost:8080/img/avatar.png",
-        })
-      )
+        }),
+      ),
     );
   });
 
@@ -382,7 +416,9 @@ describe("RegisterForm — Cobertura completa", () => {
     submitForm();
     await waitFor(() => expect(mockLoginFn).toHaveBeenCalled());
     await waitFor(() =>
-      expect(screen.getByText("¡Bienvenid@ a Code Crafters!")).toBeInTheDocument()
+      expect(
+        screen.getByText("¡Bienvenid@ a Code Crafters!"),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -412,14 +448,16 @@ describe("RegisterForm — Cobertura completa", () => {
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(mockUploadProfileImage).toHaveBeenCalledWith(99, fakeFile)
+      expect(mockUploadProfileImage).toHaveBeenCalledWith(99, fakeFile),
     );
   });
 
   it("muestra error de avatar cuando onFileSelect recibe un error", () => {
     wrap();
     act(() => avatarProps.onFileSelect(null, "Formato no soportado"));
-    expect(screen.getByTestId("avatar-error")).toHaveTextContent("Formato no soportado");
+    expect(screen.getByTestId("avatar-error")).toHaveTextContent(
+      "Formato no soportado",
+    );
   });
 
   it("quita el avatar al llamar a onRemove", () => {
@@ -442,26 +480,36 @@ describe("RegisterForm — Cobertura completa", () => {
 
   it("muestra 'Registrando...' durante el submit", async () => {
     let resolveRegister;
-    mockAuthRegister.mockReturnValue(new Promise((res) => { resolveRegister = res; }));
+    mockAuthRegister.mockReturnValue(
+      new Promise((res) => {
+        resolveRegister = res;
+      }),
+    );
     wrap();
     fillRequiredFields();
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("Registrando...")).toBeInTheDocument()
+      expect(screen.getByText("Registrando...")).toBeInTheDocument(),
     );
     resolveRegister({ data: {} });
   });
 
   it("deshabilita el botón de envío mientras carga", async () => {
     let resolveRegister;
-    mockAuthRegister.mockReturnValue(new Promise((res) => { resolveRegister = res; }));
+    mockAuthRegister.mockReturnValue(
+      new Promise((res) => {
+        resolveRegister = res;
+      }),
+    );
     wrap();
     fillRequiredFields();
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("Registrando...").closest("button")).toBeDisabled()
+      expect(
+        screen.getByText("Registrando...").closest("button"),
+      ).toBeDisabled(),
     );
     resolveRegister({ data: {} });
   });
@@ -473,7 +521,9 @@ describe("RegisterForm — Cobertura completa", () => {
     acceptTerms();
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText("Este email ya está registrado.")).toBeInTheDocument()
+      expect(
+        screen.getByText("Este email ya está registrado."),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -502,8 +552,8 @@ describe("RegisterForm — Cobertura completa", () => {
     submitForm();
     await waitFor(() =>
       expect(
-        screen.getByText("Hubo un error al procesar el registro.")
-      ).toBeInTheDocument()
+        screen.getByText("Hubo un error al procesar el registro."),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -515,8 +565,28 @@ describe("RegisterForm — Cobertura completa", () => {
     submitForm();
     await waitFor(() =>
       expect(
-        screen.getByText("Hubo un error al procesar el registro.")
-      ).toBeInTheDocument()
+        screen.getByText("Hubo un error al procesar el registro."),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("muestra error de alias obligatorio al enviar vacío", async () => {
+    wrap();
+    submitForm();
+    await waitFor(() =>
+      expect(screen.getByText("El alias es obligatorio")).toBeInTheDocument(),
+    );
+  });
+
+  it("muestra error de alias demasiado corto en onBlur", async () => {
+    wrap();
+    const aliasInput = document.querySelector("input[name='alias']");
+    fireEvent.change(aliasInput, { target: { value: "ab", name: "alias" } });
+    fireEvent.blur(aliasInput);
+    await waitFor(() =>
+      expect(
+        screen.getByText("El alias debe tener entre 3 y 20 caracteres"),
+      ).toBeInTheDocument(),
     );
   });
 });
